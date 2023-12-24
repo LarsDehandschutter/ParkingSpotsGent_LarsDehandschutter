@@ -24,7 +24,7 @@ interface ParkingSpotInfoRepository {
     suspend fun updateParkingSpot(parkingSpot: ParkingSpotInfo)
 }
 
-class OfflineParkingSPotInfoRepository(private val parkingSpotInfoDao: ParkingSpotInfoDao) : ParkingSpotInfoRepository{
+class OfflineParkingSpotInfoRepository(private val parkingSpotInfoDao: ParkingSpotInfoDao) : ParkingSpotInfoRepository{
     override fun getAllParkingSPotsStream(): Flow<List<ParkingSpotInfo>> = parkingSpotInfoDao.getAllParkingSpots()
 
     override suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo = parkingSpotInfoDao.getParkingSpot(id)

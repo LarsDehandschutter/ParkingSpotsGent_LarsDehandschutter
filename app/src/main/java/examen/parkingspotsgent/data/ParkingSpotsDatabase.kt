@@ -8,6 +8,8 @@ import androidx.room.RoomDatabase
 
 @Database(entities = [ParkingSpotInfo::class], version = 1, exportSchema = false)
 abstract class ParkingSpotsDatabase : RoomDatabase() {
+
+    abstract fun parkingSpotInfoDao(): ParkingSpotInfoDao
     companion object {
         @Volatile
         private var Instance: ParkingSpotsDatabase? = null
