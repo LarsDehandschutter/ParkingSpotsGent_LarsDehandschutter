@@ -27,7 +27,7 @@ class ParkingSpotsViewModel(
     val parkingSpotLocationRepository: ParkingSpotLocationRepository
 ): ViewModel() {
     val parkingSpotUiState: StateFlow<ParkingSpotsUiState> =
-        parkingSpotInfoRepository.getAllParkingSPotsStream().map{ ParkingSpotsUiState(it) }
+        parkingSpotInfoRepository.getAllParkingSpotsStream().map{ ParkingSpotsUiState(it) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),

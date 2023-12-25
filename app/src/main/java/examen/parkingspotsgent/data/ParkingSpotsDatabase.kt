@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase
 abstract class ParkingSpotsDatabase : RoomDatabase() {
 
     abstract fun parkingSpotInfoDao(): ParkingSpotInfoDao
+
     companion object {
         @Volatile
         private var Instance: ParkingSpotsDatabase? = null

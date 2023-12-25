@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ParkingSpotInfoDao {
 
+
     @Query("SELECT* from parkingSpots")
     fun getAllParkingSpots(): Flow<List<ParkingSpotInfo>>
 

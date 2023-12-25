@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ParkingSpotInfoRepository {
 
-    fun getAllParkingSPotsStream(): Flow<List<ParkingSpotInfo>>
+    fun getAllParkingSpotsStream(): Flow<List<ParkingSpotInfo>>
 
     suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo
 
@@ -25,7 +25,7 @@ interface ParkingSpotInfoRepository {
 }
 
 class OfflineParkingSpotInfoRepository(private val parkingSpotInfoDao: ParkingSpotInfoDao) : ParkingSpotInfoRepository{
-    override fun getAllParkingSPotsStream(): Flow<List<ParkingSpotInfo>> = parkingSpotInfoDao.getAllParkingSpots()
+    override fun getAllParkingSpotsStream(): Flow<List<ParkingSpotInfo>> = parkingSpotInfoDao.getAllParkingSpots()
 
     override suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo = parkingSpotInfoDao.getParkingSpot(id)
 
