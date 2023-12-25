@@ -2,19 +2,21 @@ package examen.parkingspotsgent
 
 
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -22,14 +24,50 @@ import examen.parkingspotsgent.data.AppContainer
 import examen.parkingspotsgent.data.DefaultAppContainer
 import examen.parkingspotsgent.data.ParkingSpotInfo
 import examen.parkingspotsgent.data.ParkingSpotLocationRepository
+import examen.parkingspotsgent.navigation.ParkingSpotNavHost
 
 import examen.parkingspotsgent.ui.screens.ParkingSpotsViewModel
 import kotlinx.coroutines.runBlocking
 
+
+
 @Composable
 fun ParkingSpotApp(navController: NavHostController = rememberNavController()) {
+        val parkingSpotViewModel: ParkingSpotsViewModel =
+            viewModel(factory = ParkingSpotsViewModel.Factory)
+        ParkingSpotNavHost(navController = navController, viewModel = parkingSpotViewModel )
+    }
+/**
+ * App bar to display title and conditionally display the back navigation.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ParkingSpotTopAppBar(
+    title: String,
+    canNavigateBack: Boolean,
+    modifier: Modifier = Modifier,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    navigateUp: () -> Unit = {}
+) {
+    CenterAlignedTopAppBar(
+        title = { Text(title) },
+        modifier = modifier,
+        scrollBehavior = scrollBehavior,
+        navigationIcon = {
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back_button)
+                    )
+                }
+            }
+        }
+    )
+}
 
-    val context = LocalContext.current
+
+   /* val context = LocalContext.current
     val parkingSpotsViewModel: ParkingSpotsViewModel =
         viewModel(factory = ParkingSpotsViewModel.Factory)
     val parkingSpotsUiState by parkingSpotsViewModel.parkingSpotUiState.collectAsState()
@@ -58,4 +96,4 @@ private fun showMap(context: Context, lat: Double, lon: Double, label: String) {
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
     mapIntent.setPackage("com.google.android.apps.maps")
     context.startActivity(mapIntent)
-}
+}*/
