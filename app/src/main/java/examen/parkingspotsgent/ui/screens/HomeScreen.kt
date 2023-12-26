@@ -45,7 +45,9 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-               viewModel: ParkingSpotsViewModel){
+               viewModel: ParkingSpotsViewModel,
+    navigateToDetails: (String) -> Unit
+){
     val parkingSpotUiState by viewModel.parkingSpotUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -63,6 +65,7 @@ fun HomeScreen(
 
         HomeBody(
             parkingSpotList = parkingSpotUiState.parkingSpotList,
+            onItemClick = navigateToDetails,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -72,6 +75,7 @@ fun HomeScreen(
 @Composable
 private fun HomeBody(
     parkingSpotList: List<ParkingSpotInfo>,
+    onItemClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -80,7 +84,7 @@ private fun HomeBody(
     ) {
         parkingSpotList(
             parkingSpotList = parkingSpotList,
-
+            onItemClick = { onItemClick(it.id) },
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
         )
     }
@@ -89,7 +93,7 @@ private fun HomeBody(
 @Composable
 private fun parkingSpotList(
     parkingSpotList: List<ParkingSpotInfo>,
-
+    onItemClick: (ParkingSpotInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
@@ -100,6 +104,7 @@ private fun parkingSpotList(
                 parkingSpot = parkingSpot,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
+                    .clickable { onItemClick(parkingSpot) }
             )
         }
     }
@@ -160,7 +165,7 @@ fun HomeBodyPreview() {
                     type = "P"
                 ),
             ),
-
+            onItemClick = {}
         )
     }
 }

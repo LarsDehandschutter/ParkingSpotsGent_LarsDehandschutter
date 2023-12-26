@@ -12,22 +12,16 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import examen.parkingspotsgent.data.AppContainer
-import examen.parkingspotsgent.data.DefaultAppContainer
-import examen.parkingspotsgent.data.ParkingSpotInfo
-import examen.parkingspotsgent.data.ParkingSpotLocationRepository
 import examen.parkingspotsgent.navigation.ParkingSpotNavHost
 
 import examen.parkingspotsgent.ui.screens.ParkingSpotsViewModel
-import kotlinx.coroutines.runBlocking
+
 
 
 

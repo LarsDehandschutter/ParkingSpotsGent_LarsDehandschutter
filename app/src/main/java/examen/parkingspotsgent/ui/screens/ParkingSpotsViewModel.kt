@@ -12,16 +12,33 @@ import examen.parkingspotsgent.data.ParkingSpotInfoRepository
 import examen.parkingspotsgent.data.ParkingSpotLocationRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
 
 data class ParkingSpotsUiState(val parkingSpotList: List<ParkingSpotInfo> = listOf())
+
+data class AppUiState(
+    val selectedParkingSpot: ParkingSpotInfo? = ParkingSpotInfo(
+        id = "",
+        name = "",
+        houseNr = "",
+        type = "",
+        streetName = "",
+        capacity = 0,
+        infoText = "",
+        lon = 0.0,
+        lat = 0.0
+    )
+)
 class ParkingSpotsViewModel(
     val parkingSpotInfoRepository : ParkingSpotInfoRepository,
     val parkingSpotLocationRepository: ParkingSpotLocationRepository
@@ -33,6 +50,8 @@ class ParkingSpotsViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = ParkingSpotsUiState()
             )
+    private val _uiState = MutableStateFlow(AppUiState())
+    val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
     private suspend fun getAllParkingSpots() = coroutineScope {
         val parkingSpots = async {
             try {
@@ -45,7 +64,14 @@ class ParkingSpotsViewModel(
         }
         parkingSpots.await().forEach { parkingSpotInfoRepository.insertParkingSpot(it) }
     }
-
+    fun selectParkingSpot(id: String) = viewModelScope.launch {
+        val parkingSpot = async {
+            parkingSpotInfoRepository.getParkingSpotsInfo(id)
+        }
+        _uiState.update { currentState ->
+            currentState.copy(selectedParkingSpot = parkingSpot.await())
+        }
+    }
     init {
         Log.d("ParkingSpotsViewModel", "Init")
         viewModelScope.launch { getAllParkingSpots() }
