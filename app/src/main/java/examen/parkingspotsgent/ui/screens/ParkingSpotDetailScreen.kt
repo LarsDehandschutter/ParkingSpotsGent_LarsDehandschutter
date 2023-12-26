@@ -92,15 +92,34 @@ private fun ParkingSpotDetailsBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         val parkingSpot = appUiState.selectedParkingSpot
+        val context = LocalContext.current
         ParkingSpotDetails(
             parkingSpot = parkingSpot, modifier = Modifier.fillMaxWidth()
         )
+        Button(
+            onClick = { showMap(
+                context = context,
+                lat = parkingSpot?.lat ?: 0.0,
+                lon = parkingSpot?.lon ?: 0.0,
+                label = parkingSpot?.name ?: ""
+            ) },
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.small,
+            enabled = true
+        ) {
+            Text(stringResource(R.string.show_map))
+        }
 
     }
 }
 
 
-
+private fun showMap(context: Context, lat: Double, lon: Double, label: String) {
+    val gmmIntentUri = Uri.parse("geo:$lat,$lon?z=18&q=$label")
+    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+    mapIntent.setPackage("com.google.android.apps.maps")
+    context.startActivity(mapIntent)
+}
 
 @Composable
 fun ParkingSpotDetails(
