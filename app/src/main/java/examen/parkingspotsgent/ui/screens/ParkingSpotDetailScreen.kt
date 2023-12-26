@@ -40,8 +40,8 @@ import examen.parkingspotsgent.ui.theme.ParkingspotsGentTheme
 object ParkingSpotDetailsDestination : NavigationDestination {
     override val route = "parkingSpot_details"
     override val titleRes = R.string.parkingSpot_detail_title
-    const val itemIdArg = "itemId"
-    val routeWithArgs = "$route/{$itemIdArg}"
+  //  const val itemIdArg = "itemId"
+  //  val routeWithArgs = "$route/{$itemIdArg}"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,7 +92,6 @@ private fun ParkingSpotDetailsBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         val parkingSpot = appUiState.selectedParkingSpot
-        val context = LocalContext.current
         ParkingSpotDetails(
             parkingSpot = parkingSpot, modifier = Modifier.fillMaxWidth()
         )

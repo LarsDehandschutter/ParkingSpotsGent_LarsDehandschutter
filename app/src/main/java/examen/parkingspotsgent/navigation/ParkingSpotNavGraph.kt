@@ -3,10 +3,8 @@ package examen.parkingspotsgent.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import examen.parkingspotsgent.ui.screens.FilterDestination
 import examen.parkingspotsgent.ui.screens.FilterScreen
 import examen.parkingspotsgent.ui.screens.HomeDestination
@@ -31,7 +29,7 @@ fun ParkingSpotNavHost(
                 navigateToFilter = { navController.navigate(FilterDestination.route) },
                 navigateToDetails = {
                     viewModel.selectParkingSpot(it)
-                    navController.navigate("${ParkingSpotDetailsDestination.route}/${it}")
+                    navController.navigate(ParkingSpotDetailsDestination.route)
                 },
 
                     viewModel = viewModel
@@ -47,11 +45,7 @@ fun ParkingSpotNavHost(
             )
         }
         composable(
-            route = ParkingSpotDetailsDestination.routeWithArgs,
-            arguments = listOf(navArgument(ParkingSpotDetailsDestination.itemIdArg) {
-                type = NavType.StringType
-            })
-        ) {
+            route = ParkingSpotDetailsDestination.route) {
             ParkingSpotDetailsScreen(
                 navigateBack = { navController.navigateUp() },
                 viewModel = viewModel

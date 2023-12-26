@@ -200,7 +200,7 @@ fun HomeBodyPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun DoctorItemPreview() {
+fun ParkingSpotItemPreview() {
     ParkingspotsGentTheme {
         ParkingSpotItem(
             ParkingSpotInfo(

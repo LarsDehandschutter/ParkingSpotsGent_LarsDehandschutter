@@ -9,17 +9,17 @@ interface ParkingSpotInfoRepository {
     suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo?
 
     /**
-     * Insert doctor in the data source
+     * Insert parkingSpot in the data source
      */
     suspend fun insertParkingSpot(parkingSpot: ParkingSpotInfo)
 
     /**
-     * Delete doctor from the data source
+     * Delete parkingSpot from the data source
      */
     suspend fun deleteParkingSpot(parkingSpot: ParkingSpotInfo)
 
     /**
-     * Update doctor in the data source
+     * Update parkingSpot in the data source
      */
     suspend fun updateParkingSpot(parkingSpot: ParkingSpotInfo)
 }

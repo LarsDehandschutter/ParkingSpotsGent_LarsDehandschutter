@@ -21,7 +21,7 @@ interface ParkingSpotInfoDao {
 
     // Room convenience function for insertion
     // Specify the conflict strategy as REPLACE, when the user tries to add an
-    // existing doctor into the database. Room solves the conflict by replacement.
+    // existing parkingSpot into the database. Room solves the conflict by replacement.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(parkingSpotInfo: ParkingSpotInfo)
 
