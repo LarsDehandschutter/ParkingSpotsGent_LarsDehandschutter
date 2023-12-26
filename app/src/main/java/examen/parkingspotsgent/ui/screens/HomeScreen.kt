@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,9 +47,12 @@ object HomeDestination : NavigationDestination {
 fun HomeScreen(
     modifier: Modifier = Modifier,
                viewModel: ParkingSpotsViewModel,
+    navigateToFilter: () -> Unit,
     navigateToDetails: (String) -> Unit
+
 ){
     val parkingSpotUiState by viewModel.parkingSpotUiState.collectAsState()
+    val appUiState by viewModel.appUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -60,11 +64,24 @@ fun HomeScreen(
                 scrollBehavior = scrollBehavior
             )
         },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = navigateToFilter,
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.filter_title)
+                )
+            }
+        },
 
     ) { innerPadding ->
 
         HomeBody(
             parkingSpotList = parkingSpotUiState.parkingSpotList,
+            typeFilter = appUiState.typeFilter,
             onItemClick = navigateToDetails,
             modifier = modifier
                 .padding(innerPadding)
@@ -75,6 +92,7 @@ fun HomeScreen(
 @Composable
 private fun HomeBody(
     parkingSpotList: List<ParkingSpotInfo>,
+    typeFilter: String?,
     onItemClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -82,8 +100,9 @@ private fun HomeBody(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        parkingSpotList(
+        ParkingSpotList(
             parkingSpotList = parkingSpotList,
+            typeFilter = typeFilter,
             onItemClick = { onItemClick(it.id) },
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
         )
@@ -91,15 +110,18 @@ private fun HomeBody(
 }
 
 @Composable
-private fun parkingSpotList(
+private fun ParkingSpotList(
     parkingSpotList: List<ParkingSpotInfo>,
+    typeFilter: String?,
     onItemClick: (ParkingSpotInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
 
-
-        items(items = parkingSpotList, key = { it.id }) { parkingSpot ->
+        val filteredList = parkingSpotList.filter {
+            (typeFilter?.equals(it.type) ?: true)
+        }
+        items(items = filteredList, key = { it.id }) { parkingSpot ->
             ParkingSpotItem(
                 parkingSpot = parkingSpot,
                 modifier = Modifier
@@ -126,6 +148,11 @@ private fun ParkingSpotItem(
             Text(
                 text = parkingSpot.name,
                 style = MaterialTheme.typography.titleLarge,
+            )
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = parkingSpot.type,
+                style = MaterialTheme.typography.titleMedium
             )
             Spacer(Modifier.weight(1f))
             Text(
@@ -165,6 +192,7 @@ fun HomeBodyPreview() {
                     type = "P"
                 ),
             ),
+            typeFilter = null,
             onItemClick = {}
         )
     }

@@ -27,6 +27,7 @@ import java.io.IOException
 data class ParkingSpotsUiState(val parkingSpotList: List<ParkingSpotInfo> = listOf())
 
 data class AppUiState(
+    val typeFilter: String? = null,
     val selectedParkingSpot: ParkingSpotInfo? = ParkingSpotInfo(
         id = "",
         name = "",
@@ -70,6 +71,12 @@ class ParkingSpotsViewModel(
         }
         _uiState.update { currentState ->
             currentState.copy(selectedParkingSpot = parkingSpot.await())
+        }
+    }
+
+    fun setTypeFilter(filter: String) {
+        _uiState.update { currentState ->
+            currentState.copy(typeFilter = filter)
         }
     }
     init {
