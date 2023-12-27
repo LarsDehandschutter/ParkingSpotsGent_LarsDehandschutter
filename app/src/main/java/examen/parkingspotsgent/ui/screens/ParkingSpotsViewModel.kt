@@ -40,7 +40,8 @@ data class AppUiState(
         infoText = "",
         lon = 0.0,
         lat = 0.0
-    )
+    ),
+    val synchronized: Boolean = false
 )
 class ParkingSpotsViewModel(
     val parkingSpotInfoRepository : ParkingSpotInfoRepository,
@@ -54,10 +55,14 @@ class ParkingSpotsViewModel(
                 initialValue = ParkingSpotsUiState()
             )
     private val _uiState = MutableStateFlow(AppUiState())
+
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
     val types = mutableSetOf<String>()
+
+    var retrofitSuccessful: Boolean = false // flagging successful retrofit
     private fun getAllParkingSpots() = viewModelScope.launch {
-        val parkingSpots = async {
+        updateFilters()
+        val parkingSpots =
             try {
                 parkingSpotLocationRepository.getAllParkingSpotInfo()
             } catch (e: IOException) {
@@ -65,10 +70,39 @@ class ParkingSpotsViewModel(
             } catch (e: HttpException) {
                 listOf()
             }
+            val primaryKeys = parkingSpotInfoRepository.getKeys().toMutableSet()
+            if (parkingSpots.isNotEmpty()) {
+                retrofitSuccessful = true
+                // Check if retrofitted parkingSpots are identical in Room database
+                parkingSpots.forEach {
+                    val unchanged = when {
+                        primaryKeys.contains(it.id) -> it == parkingSpotInfoRepository.getParkingSpotsInfo(it.id)
+                        else -> false
+                    }
+                    if (!unchanged)
+                        parkingSpotInfoRepository.insertParkingSpot(it) // replace with retrofitted doctor
+                    primaryKeys.remove(it.id) // Remove primary key for each retrofitted doctor
+                }
+                // Remove doctors corresponding to remaining keys in primary keys set
+                primaryKeys.forEach {
+                    parkingSpotInfoRepository.deleteParkingSpot(parkingSpotInfoRepository.getParkingSpotsInfo(it))
+                    Log.d("DoctorsViewModel", "Doctor with key $it removed from DB")
+                }
+            } else {
+                retrofitSuccessful = false
+            }
+        updateFilters()
+        // Retrofit/Room synchronization now completed, update state for recomposition
+        _uiState.update { currentState ->
+            currentState.copy(synchronized = true)
         }
-        parkingSpots.await().forEach {
-            parkingSpotInfoRepository.insertParkingSpot(it)
-            types.add(it.type)
+
+
+    }
+    // Sets type filter to all
+    private suspend fun updateFilters() {
+        parkingSpotInfoRepository.getTypes().forEach {
+            types.add(it)
         }
         setTypeFilter(types)
     }

@@ -73,7 +73,7 @@ fun FilterScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onToggleSwitch(typeFilter)  },
+                onClick = { onToggleSwitch(mutableSetOf())  },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
 

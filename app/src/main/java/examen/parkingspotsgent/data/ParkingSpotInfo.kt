@@ -17,3 +17,5 @@ data class ParkingSpotInfo(
     val lat: Double
     )
 
+
+
