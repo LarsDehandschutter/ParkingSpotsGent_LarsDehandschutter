@@ -6,7 +6,7 @@ interface ParkingSpotInfoRepository {
 
     fun getAllParkingSpotsStream(): Flow<List<ParkingSpotInfo>>
 
-    suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo?
+    suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo
 
     /**
      * Insert parkingSpot in the data source
@@ -27,7 +27,7 @@ interface ParkingSpotInfoRepository {
 class OfflineParkingSpotInfoRepository(private val parkingSpotInfoDao: ParkingSpotInfoDao) : ParkingSpotInfoRepository{
     override fun getAllParkingSpotsStream(): Flow<List<ParkingSpotInfo>> = parkingSpotInfoDao.getAllParkingSpots()
 
-    override suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo? = parkingSpotInfoDao.getParkingSpot(id)
+    override suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo = parkingSpotInfoDao.getParkingSpot(id)
 
     override suspend fun insertParkingSpot(parkingSpot: ParkingSpotInfo) = parkingSpotInfoDao.insert(parkingSpot)
 

@@ -12,6 +12,7 @@ import examen.parkingspotsgent.data.ParkingSpotInfoRepository
 import examen.parkingspotsgent.data.ParkingSpotLocationRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -27,8 +29,8 @@ import java.io.IOException
 data class ParkingSpotsUiState(val parkingSpotList: List<ParkingSpotInfo> = listOf())
 
 data class AppUiState(
-    val typeFilter: String? = null,
-    val selectedParkingSpot: ParkingSpotInfo? = ParkingSpotInfo(
+    val typeFilter: MutableSet<String> = mutableSetOf(),
+    val selectedParkingSpot: ParkingSpotInfo = ParkingSpotInfo(
         id = "",
         name = "",
         houseNr = "",
@@ -53,7 +55,8 @@ class ParkingSpotsViewModel(
             )
     private val _uiState = MutableStateFlow(AppUiState())
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
-    private suspend fun getAllParkingSpots() = coroutineScope {
+    val types = mutableSetOf<String>()
+    private fun getAllParkingSpots() = viewModelScope.launch {
         val parkingSpots = async {
             try {
                 parkingSpotLocationRepository.getAllParkingSpotInfo()
@@ -63,7 +66,11 @@ class ParkingSpotsViewModel(
                 listOf()
             }
         }
-        parkingSpots.await().forEach { parkingSpotInfoRepository.insertParkingSpot(it) }
+        parkingSpots.await().forEach {
+            parkingSpotInfoRepository.insertParkingSpot(it)
+            types.add(it.type)
+        }
+        setTypeFilter(types)
     }
     fun selectParkingSpot(id: String) = viewModelScope.launch {
         val parkingSpot = async {
@@ -74,7 +81,7 @@ class ParkingSpotsViewModel(
         }
     }
 
-    fun setTypeFilter(filter: String) {
+    fun setTypeFilter(filter: MutableSet<String>) {
         _uiState.update { currentState ->
             currentState.copy(typeFilter = filter)
         }

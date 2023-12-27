@@ -8,8 +8,8 @@ data class ParkingSpotInfo(
     @PrimaryKey
     val id: String,
     val capacity: Int,
-    val houseNr: String?,
-    val infoText: String?,
+    val houseNr: String,
+    val infoText: String,
     val name: String,
     val streetName: String,
     val type: String,

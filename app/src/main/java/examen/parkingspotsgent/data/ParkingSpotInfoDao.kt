@@ -17,7 +17,7 @@ interface ParkingSpotInfoDao {
     fun getAllParkingSpots(): Flow<List<ParkingSpotInfo>>
 
     @Query("SELECT * from parkingSpots WHERE id = :id")
-    suspend fun getParkingSpot(id: String): ParkingSpotInfo?
+    suspend fun getParkingSpot(id: String): ParkingSpotInfo
 
     // Room convenience function for insertion
     // Specify the conflict strategy as REPLACE, when the user tries to add an

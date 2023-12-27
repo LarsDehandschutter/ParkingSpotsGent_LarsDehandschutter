@@ -46,7 +46,7 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-               viewModel: ParkingSpotsViewModel,
+    viewModel: ParkingSpotsViewModel,
     navigateToFilter: () -> Unit,
     navigateToDetails: (String) -> Unit
 
@@ -92,7 +92,7 @@ fun HomeScreen(
 @Composable
 private fun HomeBody(
     parkingSpotList: List<ParkingSpotInfo>,
-    typeFilter: String?,
+    typeFilter: MutableSet<String>,
     onItemClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -112,14 +112,14 @@ private fun HomeBody(
 @Composable
 private fun ParkingSpotList(
     parkingSpotList: List<ParkingSpotInfo>,
-    typeFilter: String?,
+    typeFilter: MutableSet<String>,
     onItemClick: (ParkingSpotInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
 
         val filteredList = parkingSpotList.filter {
-            (typeFilter?.equals(it.type) ?: true)
+            typeFilter.contains(it.type)
         }
         items(items = filteredList, key = { it.id }) { parkingSpot ->
             ParkingSpotItem(
@@ -172,8 +172,8 @@ fun HomeBodyPreview() {
                 ParkingSpotInfo(
                     id = "1",
                     capacity = 20,
-                    houseNr = null,
-                    infoText = null,
+                    houseNr = "",
+                    infoText = "",
                     lon = 1.0,
                     lat = 1.0,
                     name = "Gent-Sint-Pieters",
@@ -183,8 +183,8 @@ fun HomeBodyPreview() {
                 ParkingSpotInfo(
                     id = "2",
                     capacity = 50,
-                    houseNr = null,
-                    infoText = null,
+                    houseNr = "",
+                    infoText = "",
                     lon = 1.0,
                     lat = 1.0,
                     name = "BommelstraatParking",
@@ -192,7 +192,7 @@ fun HomeBodyPreview() {
                     type = "P"
                 ),
             ),
-            typeFilter = null,
+            typeFilter = mutableSetOf(),
             onItemClick = {}
         )
     }
@@ -206,8 +206,8 @@ fun ParkingSpotItemPreview() {
             ParkingSpotInfo(
                 id = "1",
                 capacity = 20,
-                houseNr = null,
-                infoText = null,
+                houseNr = "",
+                infoText = "",
                 lon = 1.0,
                 lat = 1.0,
                 name = "Gent-Sint-Pieters",

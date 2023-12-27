@@ -36,10 +36,10 @@ class NetworkParkingSpotLocationsRepository(
             ParkingSpotInfo(
                 id = it.urid,
                 name = it.naam,
-                houseNr = it.huisnr,
+                houseNr = it.huisnr ?: "onbekend",
                 type = it.type,
                 streetName = it.straatnaam,
-                infoText = it.infotekst,
+                infoText = it.infotekst ?: "geen extra info",
                 capacity =it.capaciteit,
                 lon = it.geoPoint2d.lon,
                 lat = it.geoPoint2d.lat

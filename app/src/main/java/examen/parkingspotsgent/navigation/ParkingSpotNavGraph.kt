@@ -1,7 +1,9 @@
 package examen.parkingspotsgent.navigation
 
+import android.view.SoundEffectConstants
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,9 +39,8 @@ fun ParkingSpotNavHost(
         composable(route = FilterDestination.route) {
             FilterScreen(
                 navigateBack = { navController.popBackStack() },
-                onRefresh = { type ->
+                onToggleSwitch = { type ->
                     viewModel.setTypeFilter(type)
-                    navController.popBackStack()
                 },
                 viewModel = viewModel
             )

@@ -99,9 +99,9 @@ private fun ParkingSpotDetailsBody(
         Button(
             onClick = { showMap(
                 context = context,
-                lat = parkingSpot?.lat ?: 0.0,
-                lon = parkingSpot?.lon ?: 0.0,
-                label = parkingSpot?.name ?: ""
+                lat = parkingSpot.lat,
+                lon = parkingSpot.lon,
+                label = parkingSpot.name
             ) },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
@@ -123,7 +123,7 @@ private fun showMap(context: Context, lat: Double, lon: Double, label: String) {
 
 @Composable
 fun ParkingSpotDetails(
-    parkingSpot: ParkingSpotInfo?, modifier: Modifier = Modifier
+    parkingSpot: ParkingSpotInfo, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -139,7 +139,7 @@ fun ParkingSpotDetails(
         ) {
             ParkingSpotDetailsRow(
                 labelResID = R.string.parkingSpot,
-                parkingSpotDetail = parkingSpot?.name ?: "",
+                parkingSpotDetail = parkingSpot.name,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -149,7 +149,7 @@ fun ParkingSpotDetails(
             )
             ParkingSpotDetailsRow(
                 labelResID = R.string.street,
-                parkingSpotDetail = parkingSpot?.streetName ?: "",
+                parkingSpotDetail = parkingSpot.streetName,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -159,7 +159,7 @@ fun ParkingSpotDetails(
             )
             ParkingSpotDetailsRow(
                 labelResID = R.string.house_number,
-                parkingSpotDetail = parkingSpot?.houseNr ?: "",
+                parkingSpotDetail = parkingSpot.houseNr,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -169,7 +169,7 @@ fun ParkingSpotDetails(
             )
             ParkingSpotDetailsRow(
                 labelResID = R.string.type,
-                parkingSpotDetail = parkingSpot?.type ?: "",
+                parkingSpotDetail = parkingSpot.type,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -179,7 +179,7 @@ fun ParkingSpotDetails(
             )
             ParkingSpotDetailsRow(
                 labelResID = R.string.capacity,
-                parkingSpotDetail = parkingSpot?.capacity.toString() ?: "",
+                parkingSpotDetail = parkingSpot.capacity.toString(),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen

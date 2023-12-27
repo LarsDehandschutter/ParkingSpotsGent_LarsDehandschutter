@@ -61,33 +61,3 @@ fun ParkingSpotTopAppBar(
 }
 
 
-   /* val context = LocalContext.current
-    val parkingSpotsViewModel: ParkingSpotsViewModel =
-        viewModel(factory = ParkingSpotsViewModel.Factory)
-    val parkingSpotsUiState by parkingSpotsViewModel.parkingSpotUiState.collectAsState()
-
-
-    LazyColumn {
-        items(items = parkingSpotsUiState.parkingSpotList, key = { it.id }){ parkingSpotInfo ->
-
-            Text(
-                text = parkingSpotInfo.name,
-                modifier = Modifier
-                    .clickable { showMap(
-                        context = context,
-                        lat = parkingSpotInfo.lat,
-                        lon = parkingSpotInfo.lon,
-                        label = parkingSpotInfo.name
-                    )
-                    }
-            )
-
-        }
-    }
-}
-private fun showMap(context: Context, lat: Double, lon: Double, label: String) {
-    val gmmIntentUri = Uri.parse("geo:$lat,$lon?z=18&q=$label")
-    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-    mapIntent.setPackage("com.google.android.apps.maps")
-    context.startActivity(mapIntent)
-}*/
