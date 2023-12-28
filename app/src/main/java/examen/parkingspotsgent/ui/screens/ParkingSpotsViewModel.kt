@@ -77,7 +77,7 @@ class ParkingSpotsViewModel(
                 // Remove parkingSpots corresponding to remaining keys in primary keys set
                 primaryKeys.forEach {
                     parkingSpotInfoRepository.deleteParkingSpot(parkingSpotInfoRepository.getParkingSpotsInfo(it))
-                    Log.d("ParkingSpotsViewModel", "ParkingSpot with key $it removed from DB")
+
                 }
             } else {
                 retrofitSuccessful = false
@@ -119,12 +119,12 @@ class ParkingSpotsViewModel(
         }
     }
     init {
-        Log.d("ParkingSpotsViewModel", "Init")
+
         viewModelScope.launch { getAllParkingSpots() }
 
     }
     override fun onCleared() {
-        Log.d("HomeViewModel", "Cleared")
+
         super.onCleared()
     }
     companion object {

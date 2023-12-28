@@ -15,9 +15,9 @@ class FakeOfflineParkingSpotLocationRepository(
 
     override suspend fun getKeys(): List<String> = parkingSpotInfoDao.getKeys()
 
-    override suspend fun insertParkingSpot(doctor: ParkingSpotInfo) = parkingSpotInfoDao.insert(doctor)
+    override suspend fun insertParkingSpot(parkingSpot: ParkingSpotInfo) = parkingSpotInfoDao.insert(parkingSpot)
 
-    override suspend fun deleteParkingSpot(doctor: ParkingSpotInfo) = parkingSpotInfoDao.delete(doctor)
+    override suspend fun deleteParkingSpot(parkingSpot: ParkingSpotInfo) = parkingSpotInfoDao.delete(parkingSpot)
 
-    override suspend fun updateParkingSpot(doctor: ParkingSpotInfo) = parkingSpotInfoDao.update(doctor)
+    override suspend fun updateParkingSpot(parkingSpot: ParkingSpotInfo) = parkingSpotInfoDao.update(parkingSpot)
 }

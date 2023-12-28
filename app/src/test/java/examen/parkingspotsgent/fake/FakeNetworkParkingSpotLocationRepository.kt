@@ -5,10 +5,10 @@ import examen.parkingspotsgent.data.ParkingSpotLocationRepository
 import examen.parkingspotsgent.model.ParkingspotLocations
 
 class FakeNetworkParkingSpotLocationRepository(
-    private val doctorApiService: FakeParkingSpotApiService
+    private val parkingSpotApiService: FakeParkingSpotApiService
 )  : ParkingSpotLocationRepository {
 
-    override suspend fun getParkingSpotLocations(): ParkingspotLocations = doctorApiService.getParkingSpotLocations(
+    override suspend fun getParkingSpotLocations(): ParkingspotLocations = parkingSpotApiService.getParkingSpotLocations(
         apiEndpoint = "dummy",
         options = mapOf()
     )
