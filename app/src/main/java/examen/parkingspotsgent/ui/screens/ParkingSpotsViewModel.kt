@@ -10,6 +10,7 @@ import examen.parkingspotsgent.ParkingSpotsLocationApplication
 import examen.parkingspotsgent.data.ParkingSpotInfo
 import examen.parkingspotsgent.data.ParkingSpotInfoRepository
 import examen.parkingspotsgent.data.ParkingSpotLocationRepository
+import examen.parkingspotsgent.data.SpecialParkingSpots
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -30,17 +31,7 @@ data class ParkingSpotsUiState(val parkingSpotList: List<ParkingSpotInfo> = list
 
 data class AppUiState(
     val typeFilter: MutableSet<String> = mutableSetOf(),
-    val selectedParkingSpot: ParkingSpotInfo = ParkingSpotInfo(
-        id = "",
-        name = "",
-        houseNr = "",
-        type = "",
-        streetName = "",
-        capacity = 0,
-        infoText = "",
-        lon = 0.0,
-        lat = 0.0
-    ),
+    val selectedParkingSpot: ParkingSpotInfo = SpecialParkingSpots.noParkingSpots,
     val synchronized: Boolean = false
 )
 class ParkingSpotsViewModel(
@@ -80,13 +71,13 @@ class ParkingSpotsViewModel(
                         else -> false
                     }
                     if (!unchanged)
-                        parkingSpotInfoRepository.insertParkingSpot(it) // replace with retrofitted doctor
-                    primaryKeys.remove(it.id) // Remove primary key for each retrofitted doctor
+                        parkingSpotInfoRepository.insertParkingSpot(it) // replace with retrofitted parkingSpot
+                    primaryKeys.remove(it.id) // Remove primary key for each retrofitted parkingSpot
                 }
-                // Remove doctors corresponding to remaining keys in primary keys set
+                // Remove parkingSpots corresponding to remaining keys in primary keys set
                 primaryKeys.forEach {
                     parkingSpotInfoRepository.deleteParkingSpot(parkingSpotInfoRepository.getParkingSpotsInfo(it))
-                    Log.d("DoctorsViewModel", "Doctor with key $it removed from DB")
+                    Log.d("ParkingSpotsViewModel", "ParkingSpot with key $it removed from DB")
                 }
             } else {
                 retrofitSuccessful = false
@@ -118,6 +109,13 @@ class ParkingSpotsViewModel(
     fun setTypeFilter(filter: MutableSet<String>) {
         _uiState.update { currentState ->
             currentState.copy(typeFilter = filter)
+        }
+    }
+    fun clearParkingSpot() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedParkingSpot = SpecialParkingSpots.emptyParkingSpot
+            )
         }
     }
     init {

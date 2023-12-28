@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import examen.parkingspotsgent.ParkingSpotTopAppBar
 import examen.parkingspotsgent.R
 import examen.parkingspotsgent.data.ParkingSpotInfo
+import examen.parkingspotsgent.data.SpecialParkingSpots
 import examen.parkingspotsgent.navigation.NavigationDestination
 import examen.parkingspotsgent.ui.theme.ParkingspotsGentTheme
 
@@ -53,6 +54,7 @@ fun HomeScreen(
 ){
     val parkingSpotUiState by viewModel.parkingSpotUiState.collectAsState()
     val appUiState by viewModel.appUiState.collectAsState()
+    val synchronized = appUiState.synchronized
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -83,6 +85,7 @@ fun HomeScreen(
             parkingSpotList = parkingSpotUiState.parkingSpotList,
             typeFilter = appUiState.typeFilter,
             onItemClick = navigateToDetails,
+            synchronized = synchronized,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -94,6 +97,7 @@ private fun HomeBody(
     parkingSpotList: List<ParkingSpotInfo>,
     typeFilter: MutableSet<String>,
     onItemClick: (String) -> Unit,
+    synchronized:  Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -104,6 +108,7 @@ private fun HomeBody(
             parkingSpotList = parkingSpotList,
             typeFilter = typeFilter,
             onItemClick = { onItemClick(it.id) },
+            synchronized = synchronized,
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
         )
     }
@@ -114,12 +119,20 @@ private fun ParkingSpotList(
     parkingSpotList: List<ParkingSpotInfo>,
     typeFilter: MutableSet<String>,
     onItemClick: (ParkingSpotInfo) -> Unit,
+    synchronized: Boolean,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
 
-        val filteredList = parkingSpotList.filter {
+        var filteredList = parkingSpotList.filter {
             typeFilter.contains(it.type)
+        }
+        val isEmptyList = filteredList.isEmpty()
+        if (isEmptyList) {
+            filteredList = if (synchronized)
+                listOf(SpecialParkingSpots.noParkingSpots)
+            else
+                listOf(SpecialParkingSpots.startParkingSpot)
         }
         items(items = filteredList, key = { it.id }) { parkingSpot ->
             ParkingSpotItem(
@@ -193,7 +206,8 @@ fun HomeBodyPreview() {
                 ),
             ),
             typeFilter = mutableSetOf(),
-            onItemClick = {}
+            onItemClick = {},
+            synchronized = true
         )
     }
 }

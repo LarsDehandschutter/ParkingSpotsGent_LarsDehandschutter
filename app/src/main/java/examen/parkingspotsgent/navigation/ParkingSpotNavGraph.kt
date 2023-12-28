@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import examen.parkingspotsgent.data.SpecialParkingSpots
 import examen.parkingspotsgent.ui.screens.FilterDestination
 import examen.parkingspotsgent.ui.screens.FilterScreen
 import examen.parkingspotsgent.ui.screens.HomeDestination
@@ -30,7 +31,10 @@ fun ParkingSpotNavHost(
             HomeScreen(
                 navigateToFilter = { navController.navigate(FilterDestination.route) },
                 navigateToDetails = {
-                    viewModel.selectParkingSpot(it)
+                    if (it != SpecialParkingSpots.noParkingSpots.id)
+                        viewModel.selectParkingSpot(it)
+                    else
+                        viewModel.clearParkingSpot()
                     navController.navigate(ParkingSpotDetailsDestination.route)
                 },
 
