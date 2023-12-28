@@ -22,6 +22,7 @@ fun ParkingSpotNavHost(
     viewModel: ParkingSpotsViewModel,
     modifier: Modifier = Modifier
 ){
+    val view = LocalView.current
     NavHost(
         navController = navController,
         startDestination = HomeDestination.route,
@@ -29,9 +30,13 @@ fun ParkingSpotNavHost(
     ){
         composable(route = HomeDestination.route) {
             HomeScreen(
-                navigateToFilter = { navController.navigate(FilterDestination.route) },
+                navigateToFilter = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    navController.navigate(FilterDestination.route) },
                 navigateToDetails = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
                     if (it != SpecialParkingSpots.noParkingSpots.id)
+
                         viewModel.selectParkingSpot(it)
                     else
                         viewModel.clearParkingSpot()
@@ -42,8 +47,11 @@ fun ParkingSpotNavHost(
                     ) }
         composable(route = FilterDestination.route) {
             FilterScreen(
-                navigateBack = { navController.popBackStack() },
+                navigateBack = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    navController.popBackStack() },
                 onToggleSwitch = { type ->
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
                     viewModel.setTypeFilter(type)
                 },
                 viewModel = viewModel
@@ -52,7 +60,9 @@ fun ParkingSpotNavHost(
         composable(
             route = ParkingSpotDetailsDestination.route) {
             ParkingSpotDetailsScreen(
-                navigateBack = { navController.navigateUp() },
+                navigateBack = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    navController.navigateUp() },
                 viewModel = viewModel
             )
         }

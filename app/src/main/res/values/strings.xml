@@ -4,9 +4,9 @@
     <string name="parkingSpot_detail_title">ParkingInfo</string>
     <string name="show_map">Toon in google maps</string>
     <string name="parkingSpot">Parking</string>
-    <string name="house_number">huisnummer</string>
+    <string name="house_number">Huisnummer</string>
     <string name="street">Straat</string>
-    <string name="type">type</string>
-    <string name="capacity">capaciteit</string>
+    <string name="type">Type</string>
+    <string name="capacity">Capaciteit</string>
     <string name="filter_title">Kies filter opties</string>
 </resources>

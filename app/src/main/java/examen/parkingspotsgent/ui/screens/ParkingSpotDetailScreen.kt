@@ -3,6 +3,7 @@ package examen.parkingspotsgent.ui.screens
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.SoundEffectConstants
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import examen.parkingspotsgent.ParkingSpotTopAppBar
 import examen.parkingspotsgent.R
 import examen.parkingspotsgent.data.ParkingSpotInfo
+import examen.parkingspotsgent.data.SpecialParkingSpots
 import examen.parkingspotsgent.navigation.NavigationDestination
 import examen.parkingspotsgent.ui.theme.ParkingspotsGentTheme
 
@@ -52,6 +56,10 @@ fun ParkingSpotDetailsScreen(
     viewModel: ParkingSpotsViewModel
 ) {
     val appUiState = viewModel.appUiState.collectAsState()
+
+    val view = LocalView.current
+    val context = LocalContext.current
+    val parkingSpot = appUiState.value.selectedParkingSpot
     Scaffold(
         topBar = {
             ParkingSpotTopAppBar(
@@ -60,16 +68,26 @@ fun ParkingSpotDetailsScreen(
                 navigateUp = navigateBack
             )
         }, floatingActionButton = {
-            FloatingActionButton(
-                onClick = navigateBack,
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+            if (parkingSpot.id != SpecialParkingSpots.emptyParkingSpot.id) {
+                FloatingActionButton(
+                    onClick = {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
+                        showMap(
+                            context = context,
+                            lat = parkingSpot.lat,
+                            lon = parkingSpot.lon,
+                            label = parkingSpot.name
+                        )
+                    },
+                    shape = MaterialTheme.shapes.medium,
+                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
 
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.app_name),
-                )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = stringResource(R.string.show_map),
+                    )
+                }
             }
         }, modifier = modifier
     ) { innerPadding ->
@@ -87,17 +105,21 @@ private fun ParkingSpotDetailsBody(
     appUiState: AppUiState,
     modifier: Modifier = Modifier
 ) {
+    val view = LocalView.current
+    val parkingSpot = appUiState.selectedParkingSpot
+    val context = LocalContext.current
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        val parkingSpot = appUiState.selectedParkingSpot
-        val context = LocalContext.current
+
         ParkingSpotDetails(
             parkingSpot = parkingSpot, modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = { showMap(
+            onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                showMap(
                 context = context,
                 lat = parkingSpot.lat,
                 lon = parkingSpot.lon,
@@ -105,7 +127,7 @@ private fun ParkingSpotDetailsBody(
             ) },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
-            enabled = true
+            enabled = parkingSpot.id != SpecialParkingSpots.emptyParkingSpot.id
         ) {
             Text(stringResource(R.string.show_map))
         }
