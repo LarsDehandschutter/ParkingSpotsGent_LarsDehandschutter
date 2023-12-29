@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.SoundEffectConstants
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -99,9 +100,9 @@ fun ParkingSpotDetailsScreen(
         )
     }
 }
-
+@VisibleForTesting
 @Composable
-private fun ParkingSpotDetailsBody(
+internal fun ParkingSpotDetailsBody(
     appUiState: AppUiState,
     modifier: Modifier = Modifier
 ) {

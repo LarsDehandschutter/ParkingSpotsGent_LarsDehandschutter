@@ -1,6 +1,7 @@
 package examen.parkingspotsgent.ui.screens
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -97,9 +98,9 @@ fun FilterScreen(
         )
     }
 }
-
+@VisibleForTesting
 @Composable
-fun FilterBody(
+internal fun FilterBody(
     onToggleSwitch: (MutableSet<String>) -> Unit,
     allTypes: MutableSet<String>,
     typeFilter: MutableSet<String>,
@@ -195,7 +196,7 @@ private fun FilterOptionRow(
                 {
                     Icon(
                         imageVector = Icons.Filled.Check,
-                        contentDescription = null,
+                        contentDescription = option.lowercase(),
                         modifier = Modifier.size(SwitchDefaults.IconSize),
                     )
                 }

@@ -1,8 +1,10 @@
 package examen.parkingspotsgent.ui.screens
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,7 +73,13 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = navigateToFilter,
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+                modifier = if (synchronized)
+                    Modifier
+                        .padding(dimensionResource(id = R.dimen.padding_large))
+                        .testTag(stringResource(R.string.sync))
+                else
+                    Modifier
+                        .padding(dimensionResource(id = R.dimen.padding_large))
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
@@ -92,8 +101,9 @@ fun HomeScreen(
         )
     }
 }
+@VisibleForTesting
 @Composable
-private fun HomeBody(
+internal fun HomeBody(
     parkingSpotList: List<ParkingSpotInfo>,
     typeFilter: MutableSet<String>,
     onItemClick: (String) -> Unit,
@@ -158,20 +168,39 @@ private fun ParkingSpotItem(
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
-            Text(
-                text = parkingSpot.name,
-                style = MaterialTheme.typography.titleLarge,
-            )
+            Row {
+                Text(
+                    text = "Naam: ",
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                Text(
+                    text = parkingSpot.name,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            }
             Spacer(Modifier.weight(1f))
-            Text(
-                text = parkingSpot.type,
-                style = MaterialTheme.typography.titleMedium
-            )
+            Row {
+                Text(
+                    text = "Type: ",
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    text = parkingSpot.type,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
             Spacer(Modifier.weight(1f))
-            Text(
-                text = parkingSpot.capacity.toString(),
-                style = MaterialTheme.typography.titleMedium
-            )
+            Row {
+                Text(
+                    text = "Capaciteit: ",
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    text = parkingSpot.capacity.toString(),
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+
         }
     }
 }

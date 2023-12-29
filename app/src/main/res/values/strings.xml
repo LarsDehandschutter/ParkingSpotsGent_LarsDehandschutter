@@ -9,4 +9,5 @@
     <string name="type">Type</string>
     <string name="capacity">Capaciteit</string>
     <string name="filter_title">Kies filter opties</string>
+    <string name="sync">Synchronized</string>
 </resources>
