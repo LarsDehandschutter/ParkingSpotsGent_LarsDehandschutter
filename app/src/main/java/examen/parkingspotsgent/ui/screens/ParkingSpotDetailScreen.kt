@@ -69,6 +69,10 @@ fun ParkingSpotDetailsScreen(
                 navigateUp = navigateBack
             )
         }, floatingActionButton = {
+            /**
+             * Only provide a fab for showing the Google maps intent
+             * if a real parkingSpot was selected
+             */
             if (parkingSpot.id != SpecialParkingSpots.emptyParkingSpot.id) {
                 FloatingActionButton(
                     onClick = {
@@ -128,6 +132,9 @@ internal fun ParkingSpotDetailsBody(
             ) },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
+            /**
+             * Only enable the button if a real doctor is detailed
+             */
             enabled = parkingSpot.id != SpecialParkingSpots.emptyParkingSpot.id
         ) {
             Text(stringResource(R.string.show_map))
