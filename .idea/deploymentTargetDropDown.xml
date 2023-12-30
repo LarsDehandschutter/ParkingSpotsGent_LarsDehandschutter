@@ -8,16 +8,16 @@
       <entry key="app">
         <State />
       </entry>
-      <entry key="filterScreen_verifyContent_noRestriction()">
-        <State />
-      </entry>
       <entry key="filterScreen_verifyContent_restrictByType()">
         <State />
       </entry>
-      <entry key="homeScreen_verifyContent_restrictByType()">
+      <entry key="parkingSpotNavHost_clickBackOnParkingSpotDetailsScreen_navigatesToHomeScreen()">
         <State />
       </entry>
-      <entry key="parkingSpotNavHost_clickBackOnParkingSpotDetailsScreen_navigatesToHomeScreen()">
+      <entry key="parkingSpotNavHost_clickClearOnFilterScreen_clickBackOnFilterScreen_navigatesToHomeScreen()">
+        <State />
+      </entry>
+      <entry key="parkingSpotNavHost_clickParkingSpotOnHomeScreen_navigatesToParkingSpotDetailsScreen()">
         <State />
       </entry>
     </value>

@@ -22,8 +22,10 @@ class ParkingSpotViewModelTest {
 
     @Test
     fun parkingSpotViewModel_getAllParkingSpots_verifyViewModelInitSuccess() = runTest {
-        // Both fake repositories are build by using the real repositories and injecting them
-        // with fake dao en fake api service respectively
+        /**
+         * Both fake repositories are build by using the real repositories and injecting them
+         * with fake dao en fake api service respectively
+         */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
             parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(parkingSpotsApiService = FakeParkingSpotApiService())
@@ -33,18 +35,28 @@ class ParkingSpotViewModelTest {
         val selectedParkingSpot = parkingSpotViewModel.appUiState.value.selectedParkingSpot
         val parkingSpotList = parkingSpotViewModel.parkingSpotUiState.first().parkingSpotList // first (and single) emit is collected
 
-        // Check if retrofit was successful without exception thrown
+        /**
+         * Check if retrofit was successful without exception thrown
+         */
         Assert.assertTrue(parkingSpotViewModel.retrofitSuccessful)
-        // Check if all types are stored in view model
+        /**
+         * Check if all types are stored in view model
+         */
         assertEquals(
             types,
             FakeDataSource.parkingSpotLocations.results.map { it.type }.toMutableSet()
         )
-        // Check if type filters contains all types
+        /**
+         * Check if type filters contains all types
+         */
         assertEquals(types, typeFilter)
-        // Check if the initial selected parkingSpot is "special"
+        /**
+         * Check if the initial selected parkingSpot is "special"
+         */
         assertEquals(selectedParkingSpot, SpecialParkingSpots.noParkingSpots)
-        // Check if the parkingSpot list corresponds to the fake data source
+        /**
+         * Check if the parkingSpot list corresponds to the fake data source
+         */
         assertEquals(
             parkingSpotList,
             FakeDataSource.parkingSpotLocations.results.map {
@@ -65,28 +77,41 @@ class ParkingSpotViewModelTest {
 
     @Test
     fun parkingSpotViewModel_setTypeFilter_verifyAppUiState() = runTest {
-        // Both fake repositories are build by using the real repositories and injecting them
-        // with fake dao en fake api service respectively
+        /**
+         * Both fake repositories are build by using the real repositories and injecting them
+         * with fake dao en fake api service respectively
+         */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
             parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(parkingSpotsApiService = FakeParkingSpotApiService())
         )
-        // Build a type filter containing the type of the first parkingSpot in the fake data source
+
+        /**
+         * Build a type filter containing the type of the first parkingSpot in the fake data source
+         */
         val typeFilter = mutableSetOf(FakeDataSource.parkingSpotLocations.results.map { it.type}[0])
         parkingSpotViewModel.setTypeFilter(typeFilter)
         assertEquals(parkingSpotViewModel.appUiState.value.typeFilter, typeFilter)
     }
     @Test
     fun parkingSpotViewModel_selectParkingSpot_verifyAppUiState() = runTest {
-        // Both fake repositories are build by using the real repositories and injecting them
-        // with fake dao en fake api service respectively
+        /**
+         * Both fake repositories are build by using the real repositories and injecting them
+         * with fake dao en fake api service respectively
+         */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
             parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(parkingSpotsApiService = FakeParkingSpotApiService())
         )
-        // Take primary key of first parkingSpot in fake data source
+
+        /**
+         * Take primary key of first parkingSpot in fake data source
+         */
         val key = FakeDataSource.parkingSpotLocations.results.map { it.urid }[0]
-        // Take first parkingSpot in fake data source
+
+        /**
+         * Take first parkingSpot in fake data source
+         */
         val parkingSpot = FakeDataSource.parkingSpotLocations.results.map {
             ParkingSpotInfo(
                 id = it.urid,

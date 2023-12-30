@@ -73,6 +73,10 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = navigateToFilter,
                 shape = MaterialTheme.shapes.medium,
+                /**
+                 * When Retrofit/Room synchronization is completed,
+                 * put a test tag on the fab
+                 */
                 modifier = if (synchronized)
                     Modifier
                         .padding(dimensionResource(id = R.dimen.padding_large))
@@ -133,10 +137,16 @@ private fun ParkingSpotList(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
-
+        /**
+         * Filter the list of parkingSpots based on type filter sets
+         */
         var filteredList = parkingSpotList.filter {
             typeFilter.contains(it.type)
         }
+
+        /**
+         * If the filtered list is empty, prepare to display appropriate "special" parkingSpot
+         */
         val isEmptyList = filteredList.isEmpty()
         if (isEmptyList) {
             filteredList = if (synchronized)
@@ -144,12 +154,21 @@ private fun ParkingSpotList(
             else
                 listOf(SpecialParkingSpots.startParkingSpot)
         }
+        /**
+         *  Display the filtered scrollable list
+         */
         items(items = filteredList, key = { it.id }) { parkingSpot ->
             ParkingSpotItem(
                 parkingSpot = parkingSpot,
-                modifier = Modifier
+                modifier = if(synchronized)
+                    Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(parkingSpot) }
+                    .testTag(stringResource(R.string.testItems))
+                else
+                    Modifier
+                        .padding(dimensionResource(id = R.dimen.padding_small))
+                        .clickable { onItemClick(parkingSpot) }
             )
         }
     }
@@ -168,39 +187,20 @@ private fun ParkingSpotItem(
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
-            Row {
-                Text(
-                    text = "Naam: ",
-                    style = MaterialTheme.typography.titleLarge,
-                )
-                Text(
+            Text(
                     text = parkingSpot.name,
                     style = MaterialTheme.typography.titleLarge,
                 )
-            }
             Spacer(Modifier.weight(1f))
-            Row {
-                Text(
-                    text = "Type: ",
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Text(
+            Text(
                     text = parkingSpot.type,
                     style = MaterialTheme.typography.titleMedium
-                )
-            }
+            )
             Spacer(Modifier.weight(1f))
-            Row {
-                Text(
-                    text = "Capaciteit: ",
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Text(
+            Text(
                     text = parkingSpot.capacity.toString(),
                     style = MaterialTheme.typography.titleMedium
-                )
-            }
-
+            )
         }
     }
 }

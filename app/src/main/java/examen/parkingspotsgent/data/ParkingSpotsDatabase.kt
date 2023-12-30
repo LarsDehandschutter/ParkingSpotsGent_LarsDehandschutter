@@ -16,7 +16,9 @@ abstract class ParkingSpotsDatabase : RoomDatabase() {
         private var Instance: ParkingSpotsDatabase? = null
 
         fun getDatabase(context: Context): ParkingSpotsDatabase {
-            // if the Instance is not null, return it, otherwise create a new database instance.
+            /**
+             * if the Instance is not null, return it, otherwise create a new database instance.
+             */
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, ParkingSpotsDatabase::class.java, "parkingSpots_database")
                     /**
@@ -30,4 +32,5 @@ abstract class ParkingSpotsDatabase : RoomDatabase() {
             }
         }
     }
+
 }

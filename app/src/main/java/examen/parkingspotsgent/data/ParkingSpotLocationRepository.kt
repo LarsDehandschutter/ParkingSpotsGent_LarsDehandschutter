@@ -3,12 +3,18 @@ package examen.parkingspotsgent.data
 import examen.parkingspotsgent.model.ParkingspotLocations
 import examen.parkingspotsgent.model.Result
 import examen.parkingspotsgent.network.ParkingSpotsApiService
-
+/**
+ * Repository that fetches parkingSpot locations from ParkingSpotApi.
+ */
 interface ParkingSpotLocationRepository {
+    /** Fetches parkingSpot locations from ParkingSpotApi */
     suspend fun getParkingSpotLocations(): ParkingspotLocations
+    /** Fetches parkingSpot locations from Room database which is synchronized with ParkingSpotApi */
     suspend fun getAllParkingSpotInfo(): List<ParkingSpotInfo>
 }
-
+/**
+ * Network Implementation of Repository that fetches parkingSpot locations from ParkingSpotApi.
+ */
 class NetworkParkingSpotLocationsRepository(
     private val parkingSpotsApiService: ParkingSpotsApiService
 ) : ParkingSpotLocationRepository {

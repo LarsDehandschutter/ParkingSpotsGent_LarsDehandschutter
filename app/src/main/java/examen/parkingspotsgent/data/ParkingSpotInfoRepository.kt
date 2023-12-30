@@ -1,17 +1,27 @@
 package examen.parkingspotsgent.data
 
 import kotlinx.coroutines.flow.Flow
-
+/**
+ * Repository that provides insert, update, delete, and retrieve of [ParkingSpotInfo] from a given data source.
+ */
 interface ParkingSpotInfoRepository {
-
+    /**
+     * Retrieve all the parkingSpots from the the given data source.
+     */
     fun getAllParkingSpotsStream(): Flow<List<ParkingSpotInfo>>
-
+    /**
+     * Retrieve a parkingSpot from the given data source that matches with the [id].
+     */
     suspend fun getParkingSpotsInfo(id: String): ParkingSpotInfo
 
-    // Retrieve the list of distinct types
+    /**
+     * Retrieve the list of distinct types
+      */
     suspend fun getTypes(): List<String>
 
-    // Retrieve the list of primary keys which are distinct by nature
+    /**
+     * Retrieve the list of primary keys which are distinct by nature
+     */
     suspend fun getKeys(): List<String>
 
     /**

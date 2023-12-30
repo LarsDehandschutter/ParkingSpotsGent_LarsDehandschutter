@@ -37,11 +37,14 @@ interface AppContainer {
         }
 
         /**
-         * DI implementation for Mars photos repository
+         * DI implementation for parkingSpot location repository
          */
         override val parkingSpotLocationsRepository: ParkingSpotLocationRepository by lazy {
             NetworkParkingSpotLocationsRepository(retrofitService)
         }
+        /**
+         * DI Implementation for [ParkingSpotInfoRepository]
+         */
         override val parkingSpotInfoRepository: ParkingSpotInfoRepository by lazy {
             OfflineParkingSpotInfoRepository(ParkingSpotsDatabase.getDatabase(context).parkingSpotInfoDao())
         }

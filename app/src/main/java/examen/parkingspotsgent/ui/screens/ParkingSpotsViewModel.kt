@@ -30,8 +30,17 @@ import java.io.IOException
 data class ParkingSpotsUiState(val parkingSpotList: List<ParkingSpotInfo> = listOf())
 
 data class AppUiState(
+    /**
+     * types to display in Ui
+     */
     val typeFilter: MutableSet<String> = mutableSetOf(),
+    /**
+     * when filters are too restrictive
+     */
     val selectedParkingSpot: ParkingSpotInfo = SpecialParkingSpots.noParkingSpots,
+    /**
+     * true when online and offline data fully synchronized
+     */
     val synchronized: Boolean = false
 )
 class ParkingSpotsViewModel(
@@ -48,9 +57,20 @@ class ParkingSpotsViewModel(
     private val _uiState = MutableStateFlow(AppUiState())
 
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
+
+    /**
+     * all types, initially empty
+     */
     val types = mutableSetOf<String>()
 
-    var retrofitSuccessful: Boolean = false // flagging successful retrofit
+    /**
+     * flagging successful retrofit
+     */
+    var retrofitSuccessful: Boolean = false
+
+    /**
+     * Retrofit, Room database sync, sets type filters to all
+     */
     private fun getAllParkingSpots() = viewModelScope.launch {
         updateFilters()
         val parkingSpots =
@@ -90,13 +110,20 @@ class ParkingSpotsViewModel(
 
 
     }
-    // Sets type filter to all
+
+    /**
+     * Sets type filter to all
+     */
     private suspend fun updateFilters() {
         parkingSpotInfoRepository.getTypes().forEach {
             types.add(it)
         }
         setTypeFilter(types)
     }
+
+    /**
+     * Selects a parkingSpot for state based on primary key string
+     */
     fun selectParkingSpot(id: String) = viewModelScope.launch {
         val parkingSpot = async {
             parkingSpotInfoRepository.getParkingSpotsInfo(id)
@@ -105,12 +132,18 @@ class ParkingSpotsViewModel(
             currentState.copy(selectedParkingSpot = parkingSpot.await())
         }
     }
-
+    /**
+     * Set the filter for type for this app's state.
+     */
     fun setTypeFilter(filter: MutableSet<String>) {
         _uiState.update { currentState ->
             currentState.copy(typeFilter = filter)
         }
     }
+
+    /**
+     * Sets de selected parkingSpot in state to the empty parkingSpot (no information)
+     */
     fun clearParkingSpot() {
         _uiState.update { currentState ->
             currentState.copy(
@@ -118,15 +151,20 @@ class ParkingSpotsViewModel(
             )
         }
     }
+
+    /**
+     * During init of single view model, retrofit all parkingSpots, sync Room database
+     * and set type filters
+     */
     init {
 
         viewModelScope.launch { getAllParkingSpots() }
 
     }
-    override fun onCleared() {
+    /*override fun onCleared() {
 
         super.onCleared()
-    }
+    }*/
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
         val Factory: ViewModelProvider.Factory = viewModelFactory {

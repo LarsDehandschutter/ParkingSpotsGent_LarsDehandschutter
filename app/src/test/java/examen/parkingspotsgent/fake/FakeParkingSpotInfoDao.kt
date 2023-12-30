@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class FakeParkingSpotInfoDao : ParkingSpotInfoDao {
-
+    /**
+     * Build list of doctors from FakeDataSource
+     */
     private val parkingSpotInfoList = FakeDataSource.parkingSpotLocations.results.map {
         ParkingSpotInfo(
             id = it.urid,
@@ -21,6 +23,9 @@ class FakeParkingSpotInfoDao : ParkingSpotInfoDao {
         )
     }
 
+    /**
+     * Build a flow and emit once
+     */
     override fun getAllParkingSpots(): Flow<List<ParkingSpotInfo>> = flow {
         emit(parkingSpotInfoList)
     }
@@ -38,7 +43,10 @@ class FakeParkingSpotInfoDao : ParkingSpotInfoDao {
     override suspend fun getKeys(): List<String> {
         return parkingSpotInfoList.map { it.id }
     }
-    // provide empty implementation for the convenience functions
+
+    /**
+     * provide empty implementation for the convenience functions
+     */
     override suspend fun insert(parkingSpotInfo: ParkingSpotInfo) = Unit
 
     override suspend fun delete(parkingSpotInfo: ParkingSpotInfo) = Unit

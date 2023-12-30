@@ -2,7 +2,9 @@ package examen.parkingspotsgent.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
+/**
+ * Entity data class represents a single row in the database.
+ */
 @Entity(tableName = "parkingSpots")
 data class ParkingSpotInfo(
     @PrimaryKey
@@ -17,7 +19,9 @@ data class ParkingSpotInfo(
     val lat: Double
     )
 
-// Declaration of the "special" parkingSpots used in the application
+/**
+ *  Declaration of the "special" parkingSpots used in the application
+ */
 @Suppress("SpellCheckingInspection")
 object SpecialParkingSpots {
     // when there are no parkingSpots to display, likely when filters are too restrictive
@@ -33,7 +37,9 @@ object SpecialParkingSpots {
         lat = 0.0
     )
 
-    // When the application starts, used in first recompositions of the home screen
+    /**
+     * When the application starts, used in first recompositions of the home screen
+     */
     val startParkingSpot = ParkingSpotInfo(
         id = "dummy",
         name = "Even geduld ...",
@@ -46,7 +52,9 @@ object SpecialParkingSpots {
         lat = 0.0
     )
 
-    // Used as details when no parkingSpot is actually found
+    /**
+     * Used as details when no parkingSpot is actually found
+     */
     val emptyParkingSpot = ParkingSpotInfo(
         id = "dummy",
         name = "",

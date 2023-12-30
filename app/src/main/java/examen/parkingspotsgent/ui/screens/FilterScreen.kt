@@ -35,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -73,6 +74,10 @@ fun FilterScreen(
             )
         },
         floatingActionButton = {
+            /**
+             * Called when clicked, the commune filter is the empty set
+             * The Ui effect is the toggling to off of every commune switch
+             */
             FloatingActionButton(
                 onClick = { onToggleSwitch(mutableSetOf())  },
                 shape = MaterialTheme.shapes.medium,
@@ -128,6 +133,9 @@ private fun OptionList(
 ) {
 
     LazyColumn(modifier = modifier) {
+        /**
+         * Display the type switches
+         */
         items(items = allTypes.toList(), key = { it }) {
             FilterOption(
                 onToggleSwitch  = onToggleSwitch,
@@ -177,11 +185,19 @@ private fun FilterOptionRow(
         Text(
             text = option,
             style = MaterialTheme.typography.titleMedium,
+            /**
+             * Mark the type option bold in the Ui
+             */
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.weight(1f))
         Switch(
             checked = checked,
+           modifier =Modifier.testTag(R.string.switchButton.toString()),
+            /**
+             * Called when the switch is toggled
+             * and call the callback with type filter sets
+             */
             onCheckedChange = {
                 if (it){
                     typeFilter.add(option)
@@ -192,6 +208,9 @@ private fun FilterOptionRow(
                     typeFilter
                 )
             },
+            /**
+             * In case the switch is on, put an additional check icon
+             */
             thumbContent = if (checked) {
                 {
                     Icon(
@@ -203,6 +222,7 @@ private fun FilterOptionRow(
             } else {
                 null
             }
+
         )
     }
 }

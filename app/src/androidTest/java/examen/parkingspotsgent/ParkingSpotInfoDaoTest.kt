@@ -22,7 +22,9 @@ import java.io.IOException
 class ParkingSpotInfoDaoTest {
     private lateinit var parkingSpotInfoDao: ParkingSpotInfoDao
     private lateinit var parkingSpotsDatabase: ParkingSpotsDatabase
-    // Declaration of first parkingSpot
+    /**
+     * Declaration of first parkingSpot
+     */
     private val parkingSpotInfoOne = ParkingSpotInfo(
         id = "1",
         name = "naam1",
@@ -34,7 +36,10 @@ class ParkingSpotInfoDaoTest {
         lon = 1.0,
         lat = 1.0
     )
-    // Declaration of second parkingSpot
+
+    /**
+     * Declaration of second parkingSpot
+     */
     private val parkingSpotInfoTwo = ParkingSpotInfo(
         id = "2",
         name = "naam2",
@@ -122,14 +127,19 @@ class ParkingSpotInfoDaoTest {
     @Test
     @Throws(Exception::class)
     fun daoUpdateParkingSpots_updatesParkingSpotsInDB() = runBlocking {
-        // Make sure the id primary key property is the same as for the first parkingSpot
+        /**
+         * Make sure the id primary key property is the same as for the first parkingSpot
+         */
         val newParkingSpotInfoOne = parkingSpotInfoOne.copy(
             houseNr = "3",
             streetName = "straat1_update",
             lon = 3.0,
             lat = 3.0
         )
-        // Make sure the id primary key property is the same as for the second parkingSpot
+
+        /**
+         * Make sure the id primary key property is the same as for the second parkingSpot
+         */
         val newParkingSpotInfoTwo = parkingSpotInfoTwo.copy(
             houseNr = "4",
             streetName = "straat2_update",
@@ -144,12 +154,16 @@ class ParkingSpotInfoDaoTest {
         Assert.assertTrue(allParkingSpots.containsAll(listOf(newParkingSpotInfoOne, newParkingSpotInfoTwo)))
     }
 
-    // Add first parkingSpot to database
+    /**
+     * Add first parkingSpot to database
+     */
     private suspend fun addOneParkingSpotToDb() {
         parkingSpotInfoDao.insert(parkingSpotInfoOne)
     }
 
-    // Add first and second parkingSpot to database
+    /**
+     * Add first and second parkingSpot to database
+     */
     private suspend fun addTwoParkingSpotsToDb() {
         parkingSpotInfoDao.insert(parkingSpotInfoOne)
         parkingSpotInfoDao.insert(parkingSpotInfoTwo)

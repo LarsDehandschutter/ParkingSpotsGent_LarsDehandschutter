@@ -13,8 +13,10 @@ class OfflineParkingSpotLocationRepositoryTest {
     @Test
     fun offlineParkingSpotInfoRepository_getAllParkingSpotStream_verifyParkingSpotStream() =
         runTest {
-            // Use real OffLineParkingSpotInfoRepository with fake Dao injected
-            // Provides effectively a fake repository
+            /**
+             * Use real OffLineParkingSpotInfoRepository with fake Dao injected
+             * Provides effectively a fake repository
+             */
             val repository = OfflineParkingSpotInfoRepository(
                 parkingSpotInfoDao = FakeParkingSpotInfoDao()
             )
@@ -39,12 +41,17 @@ class OfflineParkingSpotLocationRepositoryTest {
     @Test
     fun offlineParkingSpotInfoRepository_getParkingSpot_verifyParkingSpot() =
         runTest {
-            // Use real OffLineParkingSpotInfoRepository with fake Dao injected
-            // Provides effectively a fake repository
+            /**
+             * Use real OffLineParkingSpotInfoRepository with fake Dao injected
+             * Provides effectively a fake repository
+             */
             val repository = OfflineParkingSpotInfoRepository(
                 parkingSpotInfoDao = FakeParkingSpotInfoDao()
             )
-            // Take first parkingSpot from fake data source
+
+            /**
+             * Take first parkingSpot from fake data source
+             */
             val parkingSpot = FakeDataSource.parkingSpotLocations.results.map {
                 ParkingSpotInfo(
                     id = it.urid,
@@ -66,12 +73,17 @@ class OfflineParkingSpotLocationRepositoryTest {
     @Test
     fun offlineParkingSpotInfoRepository_getTypes_verifyTypes() =
         runTest {
-            // Use real OffLineParkingSpotInfoRepository with fake Dao injected
-            // Provides effectively a fake repository
+            /**
+             * Use real OffLineParkingSpotInfoRepository with fake Dao injected
+             * Provides effectively a fake repository
+             */
             val repository = OfflineParkingSpotInfoRepository(
                 parkingSpotInfoDao = FakeParkingSpotInfoDao()
             )
-            // Build list of types from fake data source
+
+            /**
+             * Build list of types from fake data source
+             */
             val types = FakeDataSource.parkingSpotLocations.results.map {
                 it.type
             }
@@ -84,12 +96,17 @@ class OfflineParkingSpotLocationRepositoryTest {
     @Test
     fun offlineParkingSpotInfoRepository_getKeys_verifyKeys() =
         runTest {
-            // Use real OffLineParkingSpotInfoRepository with fake Dao injected
-            // Provides effectively a fake repository
+            /**
+             * Use real OffLineParkingSpotInfoRepository with fake Dao injected
+             * Provides effectively a fake repository
+             */
             val repository = OfflineParkingSpotInfoRepository(
                 parkingSpotInfoDao = FakeParkingSpotInfoDao()
             )
-            // Build list of keys from fake data source
+
+            /**
+             * Build list of keys from fake data source
+             */
             val keys = FakeDataSource.parkingSpotLocations.results.map {
                 it.urid
             }

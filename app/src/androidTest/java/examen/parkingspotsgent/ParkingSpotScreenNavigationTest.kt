@@ -4,15 +4,19 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import examen.parkingspotsgent.components.assertCurrentRouteName
+import examen.parkingspotsgent.data.SpecialParkingSpots
 import examen.parkingspotsgent.ui.screens.FilterDestination
 import examen.parkingspotsgent.ui.screens.HomeDestination
 import examen.parkingspotsgent.ui.screens.ParkingSpotDetailsDestination
@@ -60,8 +64,15 @@ class ParkingSpotScreenNavigationTest {
     }
     @Test
     fun parkingSpotNavHost_clickParkingSpotOnHomeScreen_navigatesToParkingSpotDetailsScreen() {
-        // Click on first parkingSpot in scrollable list
-        composeTestRule.onAllNodesWithText(text = "Naam", substring = true)
+
+        val testTag = composeTestRule.activity.getString(R.string.testItems)
+        composeTestRule.waitUntil(timeoutMillis = 15000) {
+            composeTestRule.onAllNodesWithTag(testTag = testTag)
+                .fetchSemanticsNodes().isNotEmpty()
+
+        }
+            // Click on first parkingSpot in scrollable list
+        composeTestRule.onAllNodesWithTag(testTag = testTag)
             .onFirst()
             .performClick()
         navController.assertCurrentRouteName(ParkingSpotDetailsDestination.route)
@@ -73,25 +84,60 @@ class ParkingSpotScreenNavigationTest {
         performNavigateUp()
         navController.assertCurrentRouteName(HomeDestination.route)
     }
+    @Test
+    fun parkingSpotNavHost_clickClearOnFilterScreen_clickBackOnFilterScreen_navigatesToHomeScreen() {
+        val testTag = composeTestRule.activity.getString(R.string.sync)
+        // Wait until the FAB is recomposed with the specified test tag
+        // A timeout of 15 seconds is applied
+        composeTestRule.waitUntil(timeoutMillis = 15000)  {
+            composeTestRule.onAllNodesWithTag(testTag = testTag)
+                .fetchSemanticsNodes().isNotEmpty()
+
+        }
+        navigateToFilterScreen()
+
+        composeTestRule.onAllNodesWithTag(R.string.switchButton.toString())
+            .onFirst()
+            .performClick()
+        composeTestRule.onAllNodesWithTag(R.string.switchButton.toString())
+            .onLast()
+            .performClick()
+        performNavigateUp()
+        navController.assertCurrentRouteName(HomeDestination.route)
+        // Check if the "special" doctor is displayed
+        composeTestRule.onNodeWithText(SpecialParkingSpots.noParkingSpots.name)   //Error path
+            .assertIsDisplayed()
+    }
 
 
-
-
-    // Click FAB on Home screen
+    /**
+     * Click FAB on Home screen
+     */
     private fun navigateToFilterScreen() {
         val buildText = composeTestRule.activity.getString(R.string.filter_title)
         composeTestRule.onNodeWithContentDescription(buildText)
             .performClick()
     }
 
-    // Click first parkingSpot in scrollable list
+    /**
+     * Click first parkingSpot in scrollable list
+     */
     private fun navigateToParkingSpotDetailsScreen() {
-        composeTestRule.onAllNodesWithText(text = "Naam", substring = true)
+        val testTag = composeTestRule.activity.getString(R.string.testItems)
+        composeTestRule.waitUntil(timeoutMillis = 15000) {
+            composeTestRule.onAllNodesWithTag(testTag = testTag)
+                .fetchSemanticsNodes().isNotEmpty()
+
+        }
+        // Click on first parkingSpot in scrollable list
+        composeTestRule.onAllNodesWithTag(testTag = testTag)
             .onFirst()
             .performClick()
     }
 
-    // Click back in app Top Bar
+    /**
+     * Click back in app Top Bar
+     */
     private fun performNavigateUp() {
         val backText = composeTestRule.activity.getString(R.string.back_button)
         composeTestRule.onNodeWithContentDescription(backText).performClick()

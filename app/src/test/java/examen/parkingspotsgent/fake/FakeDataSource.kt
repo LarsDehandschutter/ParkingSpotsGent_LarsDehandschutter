@@ -8,6 +8,9 @@ import examen.parkingspotsgent.model.Result
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 
+/**
+ * Build a fake datasource with two parkingSpot locations (JSON serialized format)
+ */
 @Suppress("SpellCheckingInspection")
 object FakeDataSource {
     private const val latOne = 1.0

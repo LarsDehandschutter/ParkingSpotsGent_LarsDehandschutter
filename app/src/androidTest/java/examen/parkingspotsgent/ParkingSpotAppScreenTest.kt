@@ -26,7 +26,9 @@ class ParkingSpotAppScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    // Declare first parkingSpot
+    /**
+     * Declare first parkingSpot
+     */
     private val parkingSpotOne = ParkingSpotInfo(
         id = "ur_id_1",
         name = "Bourgoyen",
@@ -39,7 +41,9 @@ class ParkingSpotAppScreenTest {
         lat = 0.0
     )
 
-    // Declare second parkingSpot
+    /**
+     * Declare second parkingSpot
+     */
     private val parkingSpotTwo = ParkingSpotInfo(
         id = "ur_id_2",
         name = "Gent-Sint-Pieters",
@@ -52,19 +56,28 @@ class ParkingSpotAppScreenTest {
         lat = 1.0
     )
 
-    // Declare list of parkingSpots containing first and second parkingSpot
+    /**
+     * Declare list of parkingSpots containing first and second parkingSpot
+     */
     private val parkingSpots = listOf(parkingSpotOne, parkingSpotTwo)
-    // Add the type of both parkingSpots in set
+
+    /**
+     * Add the type of both parkingSpots in set
+     */
     private val types = mutableSetOf(parkingSpotOne.type, parkingSpotTwo.type)
 
 
-    // Declare first App Ui State with empty filters and first parkingSpot selected
+    /**
+     * Declare first App Ui State with empty filters and first parkingSpot selected
+      */
     private val appUiStateOne = AppUiState(
         typeFilter = mutableSetOf(),
         selectedParkingSpot = parkingSpotOne
     )
 
-    // Declare second App Ui State with empty filters and "empty" parkingSpot selected
+    /**
+     * Declare second App Ui State with empty filters and "empty" parkingSpot selected
+     */
     private val appUiStateTwo = AppUiState(
         typeFilter = mutableSetOf(),
         selectedParkingSpot = SpecialParkingSpots.emptyParkingSpot
