@@ -3,6 +3,7 @@ package examen.parkingspotsgent
 import examen.parkingspotsgent.data.NetworkParkingSpotLocationsRepository
 import examen.parkingspotsgent.fake.FakeDataSource
 import examen.parkingspotsgent.fake.FakeParkingSpotApiService
+import examen.parkingspotsgent.fake.FakeRealTimeParkingSpotApiService
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -12,7 +13,8 @@ class NetworkParkingSpotLocationRepositoryTest {
     fun networkParkingSpotLocationRepository_getParkingSpotLocations_verifyParkingSpotLocations() =
         runTest {
             val repository = NetworkParkingSpotLocationsRepository(
-                parkingSpotsApiService = FakeParkingSpotApiService()
+                parkingSpotsApiService = FakeParkingSpotApiService(),
+                realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService()
             )
             assertEquals(FakeDataSource.parkingSpotLocations, repository.getParkingSpotLocations())
         }

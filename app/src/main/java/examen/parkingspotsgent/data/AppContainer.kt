@@ -3,6 +3,7 @@ package examen.parkingspotsgent.data
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import examen.parkingspotsgent.network.ParkingSpotsApiService
+import examen.parkingspotsgent.network.RealTimeParkingSpotApiService
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -35,12 +36,15 @@ interface AppContainer {
         private val retrofitService: ParkingSpotsApiService by lazy {
             retrofit.create(ParkingSpotsApiService::class.java)
         }
+        private val retrofitServiceRT: RealTimeParkingSpotApiService by lazy {
+            retrofit.create(RealTimeParkingSpotApiService::class.java)
+        }
 
         /**
          * DI implementation for parkingSpot location repository
          */
         override val parkingSpotLocationsRepository: ParkingSpotLocationRepository by lazy {
-            NetworkParkingSpotLocationsRepository(retrofitService)
+            NetworkParkingSpotLocationsRepository(retrofitService, retrofitServiceRT)
         }
         /**
          * DI Implementation for [ParkingSpotInfoRepository]

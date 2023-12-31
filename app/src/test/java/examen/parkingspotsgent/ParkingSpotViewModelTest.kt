@@ -8,6 +8,7 @@ import examen.parkingspotsgent.data.SpecialParkingSpots
 import examen.parkingspotsgent.fake.FakeDataSource
 import examen.parkingspotsgent.fake.FakeParkingSpotApiService
 import examen.parkingspotsgent.fake.FakeParkingSpotInfoDao
+import examen.parkingspotsgent.fake.FakeRealTimeParkingSpotApiService
 import examen.parkingspotsgent.ui.screens.ParkingSpotsViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
@@ -28,7 +29,9 @@ class ParkingSpotViewModelTest {
          */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
-            parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(parkingSpotsApiService = FakeParkingSpotApiService())
+            parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(
+                parkingSpotsApiService = FakeParkingSpotApiService(),
+                realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService())
         )
         val types = parkingSpotViewModel.types
         val typeFilter = parkingSpotViewModel.appUiState.value.typeFilter
@@ -83,7 +86,9 @@ class ParkingSpotViewModelTest {
          */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
-            parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(parkingSpotsApiService = FakeParkingSpotApiService())
+            parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(
+                parkingSpotsApiService = FakeParkingSpotApiService(),
+                realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService())
         )
 
         /**
@@ -101,7 +106,10 @@ class ParkingSpotViewModelTest {
          */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
-            parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(parkingSpotsApiService = FakeParkingSpotApiService())
+            parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(
+                parkingSpotsApiService = FakeParkingSpotApiService(),
+                realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService()
+            )
         )
 
         /**
@@ -133,7 +141,9 @@ class ParkingSpotViewModelTest {
     fun parkingSpotViewModel_clearParkingSpot_verifyAppUiState() = runTest {
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
-            parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(parkingSpotsApiService = FakeParkingSpotApiService())
+            parkingSpotLocationRepository = NetworkParkingSpotLocationsRepository(
+                parkingSpotsApiService = FakeParkingSpotApiService(),
+                realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService())
         )
         parkingSpotViewModel.clearParkingSpot()
         assertEquals(parkingSpotViewModel.appUiState.value.selectedParkingSpot, SpecialParkingSpots.emptyParkingSpot)

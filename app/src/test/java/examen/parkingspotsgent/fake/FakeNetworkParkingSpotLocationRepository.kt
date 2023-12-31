@@ -2,10 +2,15 @@ package examen.parkingspotsgent.fake
 
 import examen.parkingspotsgent.data.ParkingSpotInfo
 import examen.parkingspotsgent.data.ParkingSpotLocationRepository
+import examen.parkingspotsgent.data.RealTimeParkingSpotInfo
 import examen.parkingspotsgent.model.ParkingspotLocations
+import examen.parkingspotsgent.rtmodel.RealTimeParkingSpot
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 class FakeNetworkParkingSpotLocationRepository(
-    private val parkingSpotApiService: FakeParkingSpotApiService
+    private val parkingSpotApiService: FakeParkingSpotApiService,
+    private val realTimeParkingSpotApiService: FakeRealTimeParkingSpotApiService
 )  : ParkingSpotLocationRepository {
 
     override suspend fun getParkingSpotLocations(): ParkingspotLocations = parkingSpotApiService.getParkingSpotLocations(
@@ -25,4 +30,10 @@ class FakeNetworkParkingSpotLocationRepository(
             lat = it.geoPoint2d.lat
         )
     }
+    override suspend fun getRealTimeParkingSpot(): RealTimeParkingSpot = realTimeParkingSpotApiService.getRealTimeParkingSpot(
+        apiEndpoint = "dummy",
+        options = mapOf()
+    )
+    override suspend fun getRealTimeParkingSpotInfo(): List<RealTimeParkingSpotInfo> = listOf()
+    override val realTimeParking: Flow<List<RealTimeParkingSpotInfo>> = emptyFlow()
 }

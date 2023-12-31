@@ -1,5 +1,6 @@
 package examen.parkingspotsgent.ui.screens
 
+import android.icu.text.BreakIterator
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import examen.parkingspotsgent.ParkingSpotTopAppBar
 import examen.parkingspotsgent.R
 import examen.parkingspotsgent.data.ParkingSpotInfo
+import examen.parkingspotsgent.data.RealTimeParkingSpotInfo
 import examen.parkingspotsgent.data.SpecialParkingSpots
 import examen.parkingspotsgent.navigation.NavigationDestination
 import examen.parkingspotsgent.ui.theme.ParkingspotsGentTheme
@@ -59,6 +61,8 @@ fun HomeScreen(
     val appUiState by viewModel.appUiState.collectAsState()
     val synchronized = appUiState.synchronized
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    val realTimeParking = viewModel.realTimeParkingSpotInfo
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -95,6 +99,7 @@ fun HomeScreen(
     ) { innerPadding ->
 
         HomeBody(
+            realTimeParkingList = realTimeParking,
             parkingSpotList = parkingSpotUiState.parkingSpotList,
             typeFilter = appUiState.typeFilter,
             onItemClick = navigateToDetails,
@@ -108,6 +113,7 @@ fun HomeScreen(
 @VisibleForTesting
 @Composable
 internal fun HomeBody(
+    realTimeParkingList: List<RealTimeParkingSpotInfo>,
     parkingSpotList: List<ParkingSpotInfo>,
     typeFilter: MutableSet<String>,
     onItemClick: (String) -> Unit,
@@ -119,6 +125,7 @@ internal fun HomeBody(
         modifier = modifier
     ) {
         ParkingSpotList(
+            realTimeParkingList = realTimeParkingList,
             parkingSpotList = parkingSpotList,
             typeFilter = typeFilter,
             onItemClick = { onItemClick(it.id) },
@@ -130,6 +137,7 @@ internal fun HomeBody(
 
 @Composable
 private fun ParkingSpotList(
+    realTimeParkingList: List<RealTimeParkingSpotInfo>,
     parkingSpotList: List<ParkingSpotInfo>,
     typeFilter: MutableSet<String>,
     onItemClick: (ParkingSpotInfo) -> Unit,
@@ -154,11 +162,29 @@ private fun ParkingSpotList(
             else
                 listOf(SpecialParkingSpots.startParkingSpot)
         }
+
         /**
          *  Display the filtered scrollable list
          */
         items(items = filteredList, key = { it.id }) { parkingSpot ->
+            var availablePlaces : String? = "Niet beschikbaar"
+            var korteLon = ""
+            var lengteLon = 0
+            realTimeParkingList.forEach{
+                if(parkingSpot.id != "dummy") {
+                     lengteLon = it.lon.length - 1
+                    korteLon = parkingSpot.lon.toString().substring(0,lengteLon)
+                }
+                if(it.lon.substring(0,lengteLon) == korteLon) {
+                    availablePlaces = it.availableSpaces.toString()
+                }
+                /*if(it.name.contains(parkingSpot.name)) {
+                    availablePlaces = it.availableSpaces.toString()
+                }*/
+
+            }
             ParkingSpotItem(
+                availablePlaces = availablePlaces,
                 parkingSpot = parkingSpot,
                 modifier = if(synchronized)
                     Modifier
@@ -176,7 +202,9 @@ private fun ParkingSpotList(
 
 @Composable
 private fun ParkingSpotItem(
-    parkingSpot: ParkingSpotInfo, modifier: Modifier = Modifier
+    availablePlaces: String?,
+    parkingSpot: ParkingSpotInfo,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -198,7 +226,7 @@ private fun ParkingSpotItem(
             )
             Spacer(Modifier.weight(1f))
             Text(
-                    text = parkingSpot.capacity.toString(),
+                    text = "Beschikbare plaatsen: $availablePlaces",
                     style = MaterialTheme.typography.titleMedium
             )
         }
@@ -210,6 +238,7 @@ private fun ParkingSpotItem(
 fun HomeBodyPreview() {
     ParkingspotsGentTheme {
         HomeBody(
+            listOf(),
             listOf(
                 ParkingSpotInfo(
                     id = "1",
@@ -246,6 +275,7 @@ fun HomeBodyPreview() {
 fun ParkingSpotItemPreview() {
     ParkingspotsGentTheme {
         ParkingSpotItem(
+            availablePlaces = null,
             ParkingSpotInfo(
                 id = "1",
                 capacity = 20,

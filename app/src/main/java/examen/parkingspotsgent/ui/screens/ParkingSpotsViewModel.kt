@@ -10,6 +10,7 @@ import examen.parkingspotsgent.ParkingSpotsLocationApplication
 import examen.parkingspotsgent.data.ParkingSpotInfo
 import examen.parkingspotsgent.data.ParkingSpotInfoRepository
 import examen.parkingspotsgent.data.ParkingSpotLocationRepository
+import examen.parkingspotsgent.data.RealTimeParkingSpotInfo
 import examen.parkingspotsgent.data.SpecialParkingSpots
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -41,7 +43,9 @@ data class AppUiState(
     /**
      * true when online and offline data fully synchronized
      */
-    val synchronized: Boolean = false
+    val synchronized: Boolean = false,
+
+    val refreshCount: Long = 0
 )
 class ParkingSpotsViewModel(
     val parkingSpotInfoRepository : ParkingSpotInfoRepository,
@@ -67,6 +71,8 @@ class ParkingSpotsViewModel(
      * flagging successful retrofit
      */
     var retrofitSuccessful: Boolean = false
+
+    var realTimeParkingSpotInfo: List<RealTimeParkingSpotInfo> = mutableListOf()
 
     /**
      * Retrofit, Room database sync, sets type filters to all
@@ -153,12 +159,30 @@ class ParkingSpotsViewModel(
     }
 
     /**
+     * Starts the real time monitoring of the P+R parking spots and store in the view model
+     */
+    private fun startRealTimeParkingMonitor() = viewModelScope.launch {
+        // Trigger the flow and consume its elements using collect
+        parkingSpotLocationRepository.realTimeParking
+            .catch { }
+            .collect {
+                realTimeParkingSpotInfo = it.toList()
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        refreshCount = currentState.refreshCount + 1
+                    )
+                }
+            }
+    }
+
+    /**
      * During init of single view model, retrofit all parkingSpots, sync Room database
      * and set type filters
      */
     init {
 
-        viewModelScope.launch { getAllParkingSpots() }
+        getAllParkingSpots()
+        startRealTimeParkingMonitor()
 
     }
     /*override fun onCleared() {
