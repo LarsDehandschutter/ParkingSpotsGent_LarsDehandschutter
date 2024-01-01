@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ParkingSpotsGent</string>
+    <string name="back_button">Back</string>
+    <string name="parkingSpot_detail_title">ParkingInfo</string>
+    <string name="show_map">Toon in google maps</string>
+    <string name="parkingSpot">Parking</string>
+    <string name="house_number">Huisnummer</string>
+    <string name="street">Straat</string>
+    <string name="type">Type</string>
+    <string name="capacity">Capaciteit</string>
+    <string name="filter_title">Kies filter opties</string>
+    <string name="sync">Synchronized</string>
+    <string name="testItems">testItems</string>
+    <string name="switchButton">SwitchButton</string>
+</resources>
