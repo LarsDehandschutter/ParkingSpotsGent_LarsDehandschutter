@@ -90,6 +90,7 @@ class ParkingSpotAppScreenTest {
         // Allow all
         composeTestRule.setContent {
             HomeBody(
+                realTimeParkingList = listOf(),
                 parkingSpotList = parkingSpots,
                 typeFilter = mutableSetOf(parkingSpotOne.type),
                 onItemClick = { },
@@ -109,6 +110,7 @@ class ParkingSpotAppScreenTest {
         // When HomeScreen is loaded
         composeTestRule.setContent {
             HomeBody(
+                realTimeParkingList = listOf(),
                 parkingSpotList = parkingSpots,
                 typeFilter = types,
                 onItemClick = { },
@@ -132,6 +134,7 @@ class ParkingSpotAppScreenTest {
 
         composeTestRule.setContent {
             HomeBody(
+                realTimeParkingList = listOf(),
                 parkingSpotList = parkingSpots,
                 typeFilter = mutableSetOf(),
                 onItemClick = { },

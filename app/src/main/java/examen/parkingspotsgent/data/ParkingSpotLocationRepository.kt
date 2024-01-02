@@ -37,6 +37,7 @@ class TestException(message: String) : Exception(message)
 /**
  * Network Implementation of Repository that fetches parkingSpot locations from ParkingSpotApi.
  */
+@Suppress("SpellCheckingInspection")
 class NetworkParkingSpotLocationsRepository(
     private val parkingSpotsApiService: ParkingSpotsApiService,
     private val realTimeParkingSpotApiService: RealTimeParkingSpotApiService
@@ -71,10 +72,10 @@ class NetworkParkingSpotLocationsRepository(
             ParkingSpotInfo(
                 id = it.urid,
                 name = it.naam,
-                houseNr = it.huisnr ?: "onbekend",
+                houseNr = it.huisnr ?: "Onbekend",
                 type = it.type,
                 streetName = it.straatnaam,
-                infoText = it.infotekst ?: "geen extra info",
+                infoText = it.infotekst ?: "Geen extra info",
                 capacity =it.capaciteit,
                 lon = it.geoPoint2d.lon,
                 lat = it.geoPoint2d.lat

@@ -1,6 +1,5 @@
 package examen.parkingspotsgent.ui.screens
 
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,12 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,7 +41,6 @@ import examen.parkingspotsgent.ParkingSpotTopAppBar
 import examen.parkingspotsgent.R
 import examen.parkingspotsgent.navigation.NavigationDestination
 import examen.parkingspotsgent.ui.theme.ParkingspotsGentTheme
-import kotlin.math.log
 
 object FilterDestination : NavigationDestination {
     override val route = "filter"
@@ -150,7 +145,7 @@ private fun OptionList(
 }
 @Composable
 private fun FilterOption(
-    onToggleSwitch: (MutableSet<String>,) -> Unit,
+    onToggleSwitch: (MutableSet<String>) -> Unit,
     option: String,
     typeFilter: MutableSet<String>,
     modifier: Modifier = Modifier

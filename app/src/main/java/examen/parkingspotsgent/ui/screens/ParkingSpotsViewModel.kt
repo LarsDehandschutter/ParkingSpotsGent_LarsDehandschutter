@@ -1,6 +1,6 @@
 package examen.parkingspotsgent.ui.screens
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -13,8 +13,6 @@ import examen.parkingspotsgent.data.ParkingSpotLocationRepository
 import examen.parkingspotsgent.data.RealTimeParkingSpotInfo
 import examen.parkingspotsgent.data.SpecialParkingSpots
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +22,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+
 import retrofit2.HttpException
 import java.io.IOException
 

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -81,7 +80,7 @@ fun ParkingSpotDetailsScreen(
                             context = context,
                             lat = parkingSpot.lat,
                             lon = parkingSpot.lon,
-                            label = parkingSpot.name
+
                         )
                     },
                     shape = MaterialTheme.shapes.medium,
@@ -128,7 +127,6 @@ internal fun ParkingSpotDetailsBody(
                 context = context,
                 lat = parkingSpot.lat,
                 lon = parkingSpot.lon,
-                label = parkingSpot.name
             ) },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
@@ -144,8 +142,8 @@ internal fun ParkingSpotDetailsBody(
 }
 
 
-private fun showMap(context: Context, lat: Double, lon: Double, label: String) {
-    val gmmIntentUri = Uri.parse("geo:$lat,$lon?z=18&q=$label")
+private fun showMap(context: Context, lat: Double, lon: Double) {
+    val gmmIntentUri = Uri.parse("geo:$lat,$lon?z=18")
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
     mapIntent.setPackage("com.google.android.apps.maps")
     context.startActivity(mapIntent)

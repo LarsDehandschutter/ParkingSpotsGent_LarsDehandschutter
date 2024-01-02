@@ -1,11 +1,16 @@
 package examen.parkingspotsgent.ui.screens
 
-import android.icu.text.BreakIterator
 import androidx.annotation.VisibleForTesting
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,6 +31,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -167,21 +174,15 @@ private fun ParkingSpotList(
          *  Display the filtered scrollable list
          */
         items(items = filteredList, key = { it.id }) { parkingSpot ->
-            var availablePlaces : String? = "Niet beschikbaar"
-            var korteLon = ""
-            var lengteLon = 0
+            var availablePlaces = "?"
             realTimeParkingList.forEach{
-                if(parkingSpot.id != "dummy") {
-                     lengteLon = it.lon.length - 1
-                    korteLon = parkingSpot.lon.toString().substring(0,lengteLon)
-                }
-                if(it.lon.substring(0,lengteLon) == korteLon) {
+                if ( parkingSpot.id == "dummy" )
+                    return@forEach
+                val lengthOfLon = it.lon.length - 1
+                val shortLon = parkingSpot.lon.toString().substring(0, lengthOfLon)
+                if(it.lon.substring(0, lengthOfLon) == shortLon) {
                     availablePlaces = it.availableSpaces.toString()
                 }
-                /*if(it.name.contains(parkingSpot.name)) {
-                    availablePlaces = it.availableSpaces.toString()
-                }*/
-
             }
             ParkingSpotItem(
                 availablePlaces = availablePlaces,
@@ -199,10 +200,10 @@ private fun ParkingSpotList(
         }
     }
 }
-
+@Suppress("SpellCheckingInspection")
 @Composable
 private fun ParkingSpotItem(
-    availablePlaces: String?,
+    availablePlaces: String,
     parkingSpot: ParkingSpotInfo,
     modifier: Modifier = Modifier
 ) {
@@ -215,6 +216,9 @@ private fun ParkingSpotItem(
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
+            var availableSpaces by remember { mutableStateOf(mapOf <String, Int> ()) }
+            if ( availablePlaces != "?")
+                availableSpaces += mapOf(parkingSpot.name to availablePlaces.toInt())
             Text(
                     text = parkingSpot.name,
                     style = MaterialTheme.typography.titleLarge,
@@ -224,15 +228,44 @@ private fun ParkingSpotItem(
                     text = parkingSpot.type,
                     style = MaterialTheme.typography.titleMedium
             )
-            Spacer(Modifier.weight(1f))
-            Text(
-                    text = "Beschikbare plaatsen: $availablePlaces",
-                    style = MaterialTheme.typography.titleMedium
-            )
+            if( availablePlaces != "?") {
+                Spacer(Modifier.weight(1f))
+                AnimatedContent(
+                    targetState = availableSpaces[parkingSpot.name],
+                    label = parkingSpot.name,
+                    transitionSpec = {
+                        // Compare the incoming number with the previous number.
+                        if ((targetState ?: 0) > (initialState ?: 0)) {
+                            // If the target number is larger, it slides up and fades in
+                            // while the initial (smaller) number slides up and fades out.
+                            slideInVertically(
+                                animationSpec = tween(durationMillis = 1500)
+                            ) { height -> height } + fadeIn() togetherWith
+                                    slideOutVertically(
+                                        animationSpec = tween(durationMillis = 1500)
+                                    ) { height -> -height } + fadeOut()
+                        } else {
+                            // If the target number is smaller, it slides down and fades in
+                            // while the initial number slides down and fades out.
+                            slideInVertically(
+                                animationSpec = tween(durationMillis = 1500)
+                            ) { height -> -height } + fadeIn() togetherWith
+                                    slideOutVertically(
+                                        animationSpec = tween(durationMillis = 1500)
+                                    ) { height -> height } + fadeOut()
+                        }
+                    }
+                ) { targetCount ->
+                    Text(
+                        text = "Nog $targetCount plaatsen vrij",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+            }
         }
     }
 }
-
+@Suppress("SpellCheckingInspection")
 @Preview(showBackground = true)
 @Composable
 fun HomeBodyPreview() {
@@ -269,13 +302,13 @@ fun HomeBodyPreview() {
         )
     }
 }
-
+@Suppress("SpellCheckingInspection")
 @Preview(showBackground = true)
 @Composable
 fun ParkingSpotItemPreview() {
     ParkingspotsGentTheme {
         ParkingSpotItem(
-            availablePlaces = null,
+            availablePlaces = "",
             ParkingSpotInfo(
                 id = "1",
                 capacity = 20,

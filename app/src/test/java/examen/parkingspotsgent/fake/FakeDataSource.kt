@@ -5,8 +5,7 @@ import examen.parkingspotsgent.model.Geometry
 import examen.parkingspotsgent.model.GeometryX
 import examen.parkingspotsgent.model.ParkingspotLocations
 import examen.parkingspotsgent.model.Result
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.SerialName
+
 
 /**
  * Build a fake datasource with two parkingSpot locations (JSON serialized format)
