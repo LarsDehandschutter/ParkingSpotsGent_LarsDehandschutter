@@ -5,6 +5,9 @@ import examen.parkingspotsgent.model.Geometry
 import examen.parkingspotsgent.model.GeometryX
 import examen.parkingspotsgent.model.ParkingspotLocations
 import examen.parkingspotsgent.model.Result
+import examen.parkingspotsgent.rtmodel.Location
+import examen.parkingspotsgent.rtmodel.RealTimeParkingSpot
+import examen.parkingspotsgent.rtmodel.ResultRT
 
 
 /**
@@ -64,4 +67,47 @@ object FakeDataSource {
         url = "https://stad.gent/node/36642/"
     )
     val parkingSpotLocations = ParkingspotLocations( totalCount = 2, results = listOf(resultOne, resultTwo))
+
+
+    private val locationOne = Location(lat = latOne, lon = lonOne)
+    private val locationTwo = Location(lat = latTwo, lon = lonTwo)
+    private val resultRTOne = ResultRT(
+        availablespaces = 225,
+        freeparking = 1,
+        gentseFeesten = "true",
+        isopennow = 1,
+        lastupdate = "",
+        latitude = latOne.toString(),
+        location = locationOne ,
+        longitude = lonOne.toString(),
+        name = "Bourgoyen",
+        numberofspaces = 250,
+        occupancytrend = "unknown",
+        occupation = 10,
+        openingtimesdescription = "24/7",
+        operatorinformation = "Mobiliteitsbedrijf Gent",
+        temporaryclosed = 0,
+        type = "offStreetParkingGround",
+        urllinkaddress = "https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-bourgoyen"
+    )
+    private val resultRTTwo = ResultRT(
+        availablespaces = 43,
+        freeparking = 1,
+        gentseFeesten = "false",
+        isopennow = 1,
+        lastupdate = "",
+        latitude = latTwo.toString(),
+        location = locationTwo ,
+        longitude = lonTwo.toString(),
+        name = "Wondelgem",
+        numberofspaces = 62,
+        occupancytrend = "unknown",
+        occupation = 22,
+        openingtimesdescription = "24/7",
+        operatorinformation = "Mobiliteitsbedrijf Gent",
+        temporaryclosed = 0,
+        type = "offStreetParkingGround",
+        urllinkaddress = "https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-wondelgem-industrieweg"
+    )
+    val realTimeParkingSpotLocations = RealTimeParkingSpot( totalCount = 2, results = listOf(resultRTOne, resultRTTwo))
 }

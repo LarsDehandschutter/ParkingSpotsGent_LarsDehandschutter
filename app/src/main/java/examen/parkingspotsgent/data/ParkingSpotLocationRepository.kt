@@ -115,8 +115,14 @@ class NetworkParkingSpotLocationsRepository(
                 val realTimeParking = getRealTimeParkingSpotInfo()
                 emit(realTimeParking) // Emits the result of the request to the flow
             }
-            catch (_: IOException) {  }
-            catch (_: HttpException) {  }
+            catch (_: IOException) {
+                delay(100)
+                continue
+            }
+            catch (_: HttpException) {
+                delay(100)
+                continue
+            }
             catch (e: TestException) { break }
             delay(timeMillis = refreshIntervalMs) // Suspends the coroutine for some time
         }

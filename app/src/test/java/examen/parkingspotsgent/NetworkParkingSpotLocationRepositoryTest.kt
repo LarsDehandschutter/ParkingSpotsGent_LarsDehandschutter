@@ -2,6 +2,7 @@ package examen.parkingspotsgent
 
 import examen.parkingspotsgent.data.NetworkParkingSpotLocationsRepository
 import examen.parkingspotsgent.fake.FakeDataSource
+import examen.parkingspotsgent.fake.FakeNetworkParkingSpotLocationRepository
 import examen.parkingspotsgent.fake.FakeParkingSpotApiService
 import examen.parkingspotsgent.fake.FakeRealTimeParkingSpotApiService
 import junit.framework.TestCase.assertEquals
@@ -17,5 +18,14 @@ class NetworkParkingSpotLocationRepositoryTest {
                 realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService()
             )
             assertEquals(FakeDataSource.parkingSpotLocations, repository.getParkingSpotLocations())
+        }
+    @Test
+    fun networkParkingSpotLocationRepository_getRealTimeParkingSpotLocations_verifyRealTimeParkingSpotLocations()=
+        runTest {
+            val repository = FakeNetworkParkingSpotLocationRepository(
+                parkingSpotApiService = FakeParkingSpotApiService(),
+                realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService()
+            )
+            assertEquals(FakeDataSource.realTimeParkingSpotLocations,repository.getRealTimeParkingSpot())
         }
 }

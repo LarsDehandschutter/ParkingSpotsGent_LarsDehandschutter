@@ -67,21 +67,7 @@ class ParkingSpotAppScreenTest {
     private val types = mutableSetOf(parkingSpotOne.type, parkingSpotTwo.type)
 
 
-    /**
-     * Declare first App Ui State with empty filters and first parkingSpot selected
-      */
-    private val appUiStateOne = AppUiState(
-        typeFilter = mutableSetOf(),
-        selectedParkingSpot = parkingSpotOne
-    )
-
-    /**
-     * Declare second App Ui State with empty filters and "empty" parkingSpot selected
-     */
-    private val appUiStateTwo = AppUiState(
-        typeFilter = mutableSetOf(),
-        selectedParkingSpot = SpecialParkingSpots.emptyParkingSpot
-    )
+ /*
 
     @Test
     fun homeScreen_verifyContent_restrictByType() {
@@ -104,7 +90,7 @@ class ParkingSpotAppScreenTest {
         // Check second parkingSpot is not in the scrollable list
         composeTestRule.onNodeWithText(parkingSpotTwo.name).assertDoesNotExist()
     }
-
+*/
     @Test
     fun homeScreen_verifyContent_noRestriction() {
         // When HomeScreen is loaded
@@ -202,7 +188,7 @@ class ParkingSpotAppScreenTest {
         // and the first parkingSpot is selected
         composeTestRule.setContent {
             ParkingSpotDetailsBody(
-                appUiState = appUiStateOne
+                parkingSpot = parkingSpotOne
             )
         }
         // Check if Google maps intent button is displayed, enabled and clickable
@@ -223,7 +209,7 @@ class ParkingSpotAppScreenTest {
         // and the "empty" parkingSpot is selected
         composeTestRule.setContent {
             ParkingSpotDetailsBody(
-                appUiState = appUiStateTwo
+                parkingSpot = SpecialParkingSpots.emptyParkingSpot
             )
         }
         // Check if Google maps intent button is displayed

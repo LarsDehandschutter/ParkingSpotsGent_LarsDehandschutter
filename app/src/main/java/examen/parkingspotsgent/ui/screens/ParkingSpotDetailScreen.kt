@@ -96,7 +96,7 @@ fun ParkingSpotDetailsScreen(
         }, modifier = modifier
     ) { innerPadding ->
         ParkingSpotDetailsBody(
-            appUiState = appUiState.value,
+            parkingSpot = parkingSpot,
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
@@ -106,11 +106,10 @@ fun ParkingSpotDetailsScreen(
 @VisibleForTesting
 @Composable
 internal fun ParkingSpotDetailsBody(
-    appUiState: AppUiState,
+    parkingSpot: ParkingSpotInfo,
     modifier: Modifier = Modifier
 ) {
     val view = LocalView.current
-    val parkingSpot = appUiState.selectedParkingSpot
     val context = LocalContext.current
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
@@ -236,6 +235,6 @@ private fun ParkingSpotDetailsRow(
 @Composable
 fun ItemDetailsScreenPreview() {
     ParkingspotsGentTheme {
-        ParkingSpotDetailsBody(AppUiState())
+        ParkingSpotDetailsBody(SpecialParkingSpots.emptyParkingSpot)
     }
 }
