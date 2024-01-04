@@ -2,19 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ParkingSpotAppScreenTest">
-        <State />
-      </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="parkingSpotNavHost_clickBackOnParkingSpotDetailsScreen_navigatesToHomeScreen()">
+      <entry key="homeScreen_verifyContent_noRealTimeParkingSpot()">
         <State />
       </entry>
-      <entry key="parkingSpotNavHost_clickClearOnFilterScreen_clickBackOnFilterScreen_navigatesToHomeScreen()">
+      <entry key="homeScreen_verifyContent_noRestriction()">
         <State />
       </entry>
-      <entry key="parkingSpotNavHost_clickParkingSpotOnHomeScreen_navigatesToParkingSpotDetailsScreen()">
+      <entry key="homeScreen_verifyContent_realTimeParkingSpot()">
+        <State />
+      </entry>
+      <entry key="homeScreen_verifyContent_restrictByType()">
         <State />
       </entry>
     </value>

@@ -10,6 +10,7 @@
     <string name="capacity">Capaciteit</string>
     <string name="filter_title">Kies filter opties</string>
     <string name="sync">Synchronized</string>
-    <string name="testItems">testItems</string>
+    <string name="testItems">TestItems</string>
     <string name="switchButton">SwitchButton</string>
+    <string name="realTimeTest">RealTimeTest</string>
 </resources>

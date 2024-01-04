@@ -8,10 +8,11 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import examen.parkingspotsgent.data.ParkingSpotInfo
+import examen.parkingspotsgent.data.RealTimeParkingSpotInfo
 import examen.parkingspotsgent.data.SpecialParkingSpots
-import examen.parkingspotsgent.ui.screens.AppUiState
 import examen.parkingspotsgent.ui.screens.FilterBody
 import examen.parkingspotsgent.ui.screens.HomeBody
 import examen.parkingspotsgent.ui.screens.ParkingSpotDetailsBody
@@ -57,9 +58,24 @@ class ParkingSpotAppScreenTest {
     )
 
     /**
+     * Declare real time parkingSpot
+     */
+    private val realTimeParkingSpot = RealTimeParkingSpotInfo(
+        name = "P+R Bourgoyen",
+        availableSpaces = 25,
+        lat = "0.0",
+        lon = "0.0"
+    )
+
+    /**
      * Declare list of parkingSpots containing first and second parkingSpot
      */
     private val parkingSpots = listOf(parkingSpotOne, parkingSpotTwo)
+
+    /**
+     * Declare list of real time parkingSpot
+     */
+    private val realTimeParkingSpots = listOf(realTimeParkingSpot)
 
     /**
      * Add the type of both parkingSpots in set
@@ -67,7 +83,7 @@ class ParkingSpotAppScreenTest {
     private val types = mutableSetOf(parkingSpotOne.type, parkingSpotTwo.type)
 
 
- /*
+
 
     @Test
     fun homeScreen_verifyContent_restrictByType() {
@@ -90,7 +106,46 @@ class ParkingSpotAppScreenTest {
         // Check second parkingSpot is not in the scrollable list
         composeTestRule.onNodeWithText(parkingSpotTwo.name).assertDoesNotExist()
     }
-*/
+
+    @Test
+    fun homeScreen_verifyContent_realTimeParkingSpot() {
+        // When HomeScreen is loaded
+        composeTestRule.setContent {
+            HomeBody(
+                realTimeParkingList = realTimeParkingSpots,
+                parkingSpotList = parkingSpots,
+                typeFilter = mutableSetOf(parkingSpotOne.type),
+                onItemClick = { },
+                synchronized = true
+            )
+        }
+        composeTestRule.onNodeWithText(parkingSpotOne.name)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+        // Check if extra text in real time parkingSpot is displayed
+        composeTestRule.onNodeWithTag(composeTestRule.activity.getString(R.string.realTimeTest), useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+    @Test
+    fun homeScreen_verifyContent_noRealTimeParkingSpot() {
+        // When HomeScreen is loaded
+        composeTestRule.setContent {
+            HomeBody(
+                realTimeParkingList = realTimeParkingSpots,
+                parkingSpotList = parkingSpots,
+                typeFilter = mutableSetOf(parkingSpotTwo.type),
+                onItemClick = { },
+                synchronized = true
+            )
+        }
+        composeTestRule.onNodeWithText(parkingSpotTwo.name)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+        // Check if extra text is not displayed if it is not real time
+        composeTestRule.onNodeWithTag(composeTestRule.activity.getString(R.string.realTimeTest), useUnmergedTree = true)
+            .assertDoesNotExist()
+    }
+
     @Test
     fun homeScreen_verifyContent_noRestriction() {
         // When HomeScreen is loaded

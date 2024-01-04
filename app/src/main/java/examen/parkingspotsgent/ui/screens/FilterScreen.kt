@@ -188,7 +188,7 @@ private fun FilterOptionRow(
         Spacer(modifier = Modifier.weight(1f))
         Switch(
             checked = checked,
-           modifier =Modifier.testTag(R.string.switchButton.toString()),
+           modifier =Modifier.testTag(stringResource(R.string.switchButton)),
             /**
              * Called when the switch is toggled
              * and call the callback with type filter sets
