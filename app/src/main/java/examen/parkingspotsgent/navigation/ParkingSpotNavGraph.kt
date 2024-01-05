@@ -21,7 +21,9 @@ import examen.parkingspotsgent.ui.screens.ParkingSpotsViewModel
  * A bidirectional transition between home and filter screen is possible,
  * as well as a bidirectional transition between home and parkingSpot details screen.
  * Click sounds are generated in the click callbacks provided
- *
+ * @property navController the nav host controller.
+ * @property viewModel the parkingSpot view model.
+ * @constructor creates the parkingSpot nav host.
  */
 @Composable
 fun ParkingSpotNavHost(

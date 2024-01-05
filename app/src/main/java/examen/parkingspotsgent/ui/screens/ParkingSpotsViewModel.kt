@@ -101,7 +101,6 @@ class ParkingSpotsViewModel(
                 // Remove parkingSpots corresponding to remaining keys in primary keys set
                 primaryKeys.forEach {
                     parkingSpotInfoRepository.deleteParkingSpot(parkingSpotInfoRepository.getParkingSpotsInfo(it))
-
                 }
             } else {
                 retrofitSuccessful = false
@@ -178,15 +177,9 @@ class ParkingSpotsViewModel(
      * and set type filters
      */
     init {
-
         getAllParkingSpots()
         startRealTimeParkingMonitor()
-
     }
-    /*override fun onCleared() {
-
-        super.onCleared()
-    }*/
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
         val Factory: ViewModelProvider.Factory = viewModelFactory {

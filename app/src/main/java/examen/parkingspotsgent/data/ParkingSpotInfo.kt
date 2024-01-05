@@ -3,7 +3,18 @@ package examen.parkingspotsgent.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 /**
- * Entity data class represents a single row in the database.
+ * parkingSpotInfo with a id, capacity, houseNr, infoText, name, streetName, type, lon, lat.
+ *
+ * @property id the id of the parkingSpot.
+ * @property capacity the amount of spaces of the parkingSpot.
+ * @property houseNr the house number of the parkingSpot.
+ * @property infoText extra info of the parkingSpot.
+ * @property name the name of the parkingSpot.
+ * @property streetName the name of the street where the parkingSPot is located
+ * @property type the type of parkingSpot
+ * @property lon the longitude coordinate of the parkingSpot
+ * @property lat the latitude coordinate of the parkingSpot
+ * @constructor creates a parkingSpot with a id, capacity, houseNr, infoText, name, streetName, type, lon, lat.
  */
 @Entity(tableName = "parkingSpots")
 data class ParkingSpotInfo(

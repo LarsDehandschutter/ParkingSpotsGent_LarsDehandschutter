@@ -6,7 +6,6 @@ import examen.parkingspotsgent.data.RealTimeParkingSpotInfo
 import examen.parkingspotsgent.model.ParkingspotLocations
 import examen.parkingspotsgent.rtmodel.RealTimeParkingSpot
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 
 class FakeNetworkParkingSpotLocationRepository(
@@ -16,7 +15,7 @@ class FakeNetworkParkingSpotLocationRepository(
 
     override suspend fun getParkingSpotLocations(): ParkingspotLocations = parkingSpotApiService.getParkingSpotLocations(
         apiEndpoint = "dummy",
-        options = mapOf()
+        options = mapOf("offset" to "0")
     )
     override suspend fun getAllParkingSpotInfo(): List<ParkingSpotInfo> = getParkingSpotLocations().results.map{
         ParkingSpotInfo(
@@ -33,7 +32,7 @@ class FakeNetworkParkingSpotLocationRepository(
     }
     override suspend fun getRealTimeParkingSpot(): RealTimeParkingSpot = realTimeParkingSpotApiService.getRealTimeParkingSpot(
         apiEndpoint = "dummy",
-        options = mapOf()
+        options = mapOf("offset" to "0")
     )
     override suspend fun getRealTimeParkingSpotInfo(): List<RealTimeParkingSpotInfo> = getRealTimeParkingSpot().results.map {
         RealTimeParkingSpotInfo(

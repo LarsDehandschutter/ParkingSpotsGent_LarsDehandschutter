@@ -22,9 +22,9 @@ interface ParkingSpotLocationRepository {
     suspend fun getAllParkingSpotInfo(): List<ParkingSpotInfo>
 
     suspend fun getRealTimeParkingSpot(): RealTimeParkingSpot
-    /* Fetches real time parking information that is useful for the application*/
+    /** Fetches real time parking information that is useful for the application*/
     suspend fun getRealTimeParkingSpotInfo(): List<RealTimeParkingSpotInfo>
-    /* Flow that emits the real time parking info on a regular (60 s) basis*/
+    /** Flow that emits the real time parking info on a regular (60 s) basis*/
     val realTimeParking: Flow<List<RealTimeParkingSpotInfo>>
 }
 
@@ -116,10 +116,12 @@ class NetworkParkingSpotLocationsRepository(
                 emit(realTimeParking) // Emits the result of the request to the flow
             }
             catch (_: IOException) {
+                emit(listOf())
                 delay(100)
                 continue
             }
             catch (_: HttpException) {
+                emit(listOf())
                 delay(100)
                 continue
             }

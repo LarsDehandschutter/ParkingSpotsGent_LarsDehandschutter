@@ -82,7 +82,7 @@ class ParkingSpotScreenNavigationTest {
         navController.assertCurrentRouteName(HomeDestination.route)
     }
     @Test
-    fun parkingSpotNavHost_clickClearOnFilterScreen_clickBackOnFilterScreen_navigatesToHomeScreen() {
+    fun parkingSpotNavHost_clickSwitchesOnFilterScreen_clickBackOnFilterScreen_navigatesToHomeScreen() {
         val testTag = composeTestRule.activity.getString(R.string.sync)
         // Wait until the FAB is recomposed with the specified test tag
         // A timeout of 15 seconds is applied
@@ -93,10 +93,10 @@ class ParkingSpotScreenNavigationTest {
         }
         navigateToFilterScreen()
 
-        composeTestRule.onAllNodesWithTag(R.string.switchButton.toString())
+        composeTestRule.onAllNodesWithTag(composeTestRule.activity.getString(R.string.switchButton))
             .onFirst()
             .performClick()
-        composeTestRule.onAllNodesWithTag(R.string.switchButton.toString())
+        composeTestRule.onAllNodesWithTag(composeTestRule.activity.getString(R.string.switchButton))
             .onLast()
             .performClick()
         performNavigateUp()
