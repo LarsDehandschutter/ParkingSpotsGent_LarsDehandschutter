@@ -54,20 +54,19 @@ fun ParkingSpotNavHost(
                 navigateToDetails = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
                     if (it != SpecialParkingSpots.noParkingSpots.id)
-
                         viewModel.selectParkingSpot(it)
                     else
                         viewModel.clearParkingSpot()
                     navController.navigate(ParkingSpotDetailsDestination.route)
                 },
-
-                    viewModel = viewModel
-                    ) }
+                viewModel = viewModel
+            )
+        }
         composable(route = FilterDestination.route) {
-            /**
-             * Called when the back button in the App bar is clicked
-             */
             FilterScreen(
+                /**
+                 * Called when the back button in the App bar is clicked
+                 */
                 navigateBack = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
                     navController.popBackStack() },
@@ -83,13 +82,14 @@ fun ParkingSpotNavHost(
         }
         composable(
             route = ParkingSpotDetailsDestination.route) {
-            /**
-             * Called when the back button in the App bar is clicked
-             */
             ParkingSpotDetailsScreen(
+                /**
+                 * Called when the back button in the App bar is clicked
+                 */
                 navigateBack = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
-                    navController.navigateUp() },
+                    navController.navigateUp()
+                },
                 viewModel = viewModel
             )
         }

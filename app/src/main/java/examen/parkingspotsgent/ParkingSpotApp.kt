@@ -29,7 +29,7 @@ import examen.parkingspotsgent.ui.screens.ParkingSpotsViewModel
 fun ParkingSpotApp(navController: NavHostController = rememberNavController()) {
         val parkingSpotViewModel: ParkingSpotsViewModel =
             viewModel(factory = ParkingSpotsViewModel.Factory)
-        ParkingSpotNavHost(navController = navController, viewModel = parkingSpotViewModel )
+        ParkingSpotNavHost(navController = navController, viewModel = parkingSpotViewModel)
     }
 /**
  * App bar to display title and conditionally display the back navigation.

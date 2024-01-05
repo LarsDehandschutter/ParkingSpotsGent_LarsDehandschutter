@@ -5,8 +5,8 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
-interface
-ParkingSpotsApiService {
+@Suppress("SpellCheckingInspection")
+interface ParkingSpotsApiService {
     /**
      * function for creating retrofit api calls
      * @property apiEndpoint is the endpoint for the base url.

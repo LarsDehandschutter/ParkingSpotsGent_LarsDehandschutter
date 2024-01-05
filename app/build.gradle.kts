@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
     id("com.google.devtools.ksp") version "1.8.21-1.0.11"
+    id("org.jetbrains.dokka") version "1.9.10"
 }
 
 android {

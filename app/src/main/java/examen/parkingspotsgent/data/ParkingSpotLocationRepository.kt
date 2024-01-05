@@ -18,7 +18,7 @@ import java.io.IOException
 interface ParkingSpotLocationRepository {
     /** Fetches parkingSpot locations from ParkingSpotApi */
     suspend fun getParkingSpotLocations(): ParkingspotLocations
-    /** Fetches parkingSpot locations from Room database which is synchronized with ParkingSpotApi */
+    /** Fetches parking information that is useful for the application*/
     suspend fun getAllParkingSpotInfo(): List<ParkingSpotInfo>
 
     suspend fun getRealTimeParkingSpot(): RealTimeParkingSpot
@@ -32,7 +32,7 @@ interface ParkingSpotLocationRepository {
 private const val refreshIntervalMs: Long = 60000
 
 // Custom exception used to cancel the flow in unit test
-class TestException(message: String) : Exception(message)
+//class TestException(message: String) : Exception(message)
 
 /**
  * Network Implementation of Repository that fetches parkingSpot locations from ParkingSpotApi.
@@ -125,7 +125,7 @@ class NetworkParkingSpotLocationsRepository(
                 delay(100)
                 continue
             }
-            catch (e: TestException) { break }
+            //catch (e: TestException) { break }
             delay(timeMillis = refreshIntervalMs) // Suspends the coroutine for some time
         }
     }

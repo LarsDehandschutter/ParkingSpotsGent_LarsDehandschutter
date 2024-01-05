@@ -19,6 +19,7 @@ import examen.parkingspotsgent.ui.screens.ParkingSpotDetailsBody
 import org.junit.Rule
 import org.junit.Test
 
+@Suppress("SpellCheckingInspection")
 class ParkingSpotAppScreenTest {
     /**
      * Note: To access to an empty activity, the code uses ComponentActivity instead of
@@ -41,7 +42,6 @@ class ParkingSpotAppScreenTest {
         lon = 0.0,
         lat = 0.0
     )
-
     /**
      * Declare second parkingSpot
      */
@@ -56,7 +56,6 @@ class ParkingSpotAppScreenTest {
         lon = 1.0,
         lat = 1.0
     )
-
     /**
      * Declare real time parkingSpot
      */
@@ -66,7 +65,6 @@ class ParkingSpotAppScreenTest {
         lat = "0.0",
         lon = "0.0"
     )
-
     /**
      * Declare list of parkingSpots containing first and second parkingSpot
      */
@@ -82,14 +80,10 @@ class ParkingSpotAppScreenTest {
      */
     private val types = mutableSetOf(parkingSpotOne.type, parkingSpotTwo.type)
 
-
-
-
     @Test
     fun homeScreen_verifyContent_restrictByType() {
         // When HomeScreen is loaded
         // Allow only the type of first parkingSpot
-        // Allow all
         composeTestRule.setContent {
             HomeBody(
                 realTimeParkingList = listOf(),
@@ -123,8 +117,11 @@ class ParkingSpotAppScreenTest {
             .assertIsDisplayed()
             .assertHasClickAction()
         // Check if extra text in real time parkingSpot is displayed
-        composeTestRule.onNodeWithTag(composeTestRule.activity.getString(R.string.realTimeTest), useUnmergedTree = true)
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            composeTestRule.activity.getString(R.string.realTimeTest),
+            useUnmergedTree = true
+        )
+        .assertIsDisplayed()
     }
     @Test
     fun homeScreen_verifyContent_noRealTimeParkingSpot() {
@@ -141,7 +138,7 @@ class ParkingSpotAppScreenTest {
         composeTestRule.onNodeWithText(parkingSpotTwo.name)
             .assertIsDisplayed()
             .assertHasClickAction()
-        // Check if extra text is not displayed if it is not real time
+        // Check that there is no item with real time info
         composeTestRule.onNodeWithTag(composeTestRule.activity.getString(R.string.realTimeTest), useUnmergedTree = true)
             .assertDoesNotExist()
     }
@@ -171,8 +168,7 @@ class ParkingSpotAppScreenTest {
     @Test
     fun homeScreen_verifyContent_TooRestricted() {  //Error path
         // When HomeScreen is loaded
-        // Allow all types
-
+        // Allow no types
         composeTestRule.setContent {
             HomeBody(
                 realTimeParkingList = listOf(),
@@ -196,7 +192,7 @@ class ParkingSpotAppScreenTest {
     @Test
     fun filterScreen_verifyContent_noRestriction() {
         // When FilterScreen is loaded
-        // Allow all types and communes
+        // Allow all types
         composeTestRule.setContent {
             FilterBody(
                 onToggleSwitch = { _:MutableSet<String> ->  },
@@ -208,7 +204,7 @@ class ParkingSpotAppScreenTest {
         // Check whether all corresponding switches are checked
         types.forEach {
             composeTestRule.onNodeWithText(it).assertIsDisplayed()
-            composeTestRule.onNodeWithContentDescription(it.lowercase()).assertIsDisplayed()
+            composeTestRule.onNodeWithContentDescription(it).assertIsDisplayed()
         }
     }
 
@@ -216,13 +212,11 @@ class ParkingSpotAppScreenTest {
     fun filterScreen_verifyContent_restrictByType() {
         // When FilterScreen is loaded
         // Only allow type of first parkingSpot
-        // Allow all communes
         composeTestRule.setContent {
             FilterBody(
                 onToggleSwitch = {_: MutableSet<String> ->  },
                 allTypes = types,
-                typeFilter = mutableSetOf(parkingSpotOne.type) ,
-
+                typeFilter = mutableSetOf(parkingSpotOne.type)
             )
         }
         // Check whether all type options are displayed
@@ -230,11 +224,9 @@ class ParkingSpotAppScreenTest {
             composeTestRule.onNodeWithText(it).assertIsDisplayed()
         }
         // Check if switch for type of first parkingSpot is checked
-        composeTestRule.onNodeWithContentDescription(parkingSpotOne.type.lowercase()).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(parkingSpotOne.type).assertIsDisplayed()
         // Check if switch for type of second parkingSpot is not checked
-        composeTestRule.onNodeWithContentDescription(parkingSpotTwo.type.lowercase()).assertDoesNotExist()
-
-
+        composeTestRule.onNodeWithContentDescription(parkingSpotTwo.type).assertDoesNotExist()
     }
 
     @Test

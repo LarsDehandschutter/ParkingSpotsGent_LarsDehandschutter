@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 
 class FakeParkingSpotInfoDao : ParkingSpotInfoDao {
     /**
-     * Build list of doctors from FakeDataSource
+     * Build list of parking spots from FakeDataSource
      */
     private val parkingSpotInfoList = FakeDataSource.parkingSpotLocations.results.map {
         ParkingSpotInfo(
@@ -33,8 +33,6 @@ class FakeParkingSpotInfoDao : ParkingSpotInfoDao {
     override suspend fun getParkingSpot(id: String): ParkingSpotInfo {
         return parkingSpotInfoList.filter { it.id == id }[0]
     }
-
-
 
     override suspend fun getTypes(): List<String> {
         return parkingSpotInfoList.map { it.type }

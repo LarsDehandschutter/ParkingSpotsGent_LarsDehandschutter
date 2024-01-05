@@ -66,10 +66,11 @@ fun HomeScreen(
 ){
     val parkingSpotUiState by viewModel.parkingSpotUiState.collectAsState()
     val appUiState by viewModel.appUiState.collectAsState()
-    val synchronized = appUiState.synchronized
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
+    val synchronized = appUiState.synchronized
     val realTimeParking = viewModel.realTimeParkingSpotInfo
+
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -101,10 +102,8 @@ fun HomeScreen(
                     contentDescription = stringResource(R.string.filter_title)
                 )
             }
-        },
-
+        }
     ) { innerPadding ->
-
         HomeBody(
             realTimeParkingList = realTimeParking,
             parkingSpotList = parkingSpotUiState.parkingSpotList,
@@ -153,12 +152,11 @@ private fun ParkingSpotList(
 ) {
     LazyColumn(modifier = modifier) {
         /**
-         * Filter the list of parkingSpots based on type filter sets
+         * Filter the list of parkingSpots based on type filter set
          */
         var filteredList = parkingSpotList.filter {
             typeFilter.contains(it.type)
         }
-
         /**
          * If the filtered list is empty, prepare to display appropriate "special" parkingSpot
          */
@@ -169,19 +167,18 @@ private fun ParkingSpotList(
             else
                 listOf(SpecialParkingSpots.startParkingSpot)
         }
-
         /**
          *  Display the filtered scrollable list
          */
         items(items = filteredList, key = { it.id }) { parkingSpot ->
             var availablePlaces = "?"
             realTimeParkingList.forEach{
-                if ( parkingSpot.id == "dummy" )
-                    return@forEach
-                val lengthOfLon = it.lon.length - 1
-                val shortLon = parkingSpot.lon.toString().substring(0, lengthOfLon)
-                if(it.lon.substring(0, lengthOfLon) == shortLon) {
-                    availablePlaces = it.availableSpaces.toString()
+                if (parkingSpot.id != "dummy" ) {
+                    val lengthOfLon = it.lon.length - 1
+                    val shortLon = parkingSpot.lon.toString().substring(0, lengthOfLon)
+                    if (it.lon.substring(0, lengthOfLon) == shortLon) {
+                        availablePlaces = it.availableSpaces.toString()
+                    }
                 }
             }
             ParkingSpotItem(
@@ -220,13 +217,13 @@ private fun ParkingSpotItem(
             if ( availablePlaces != "?")
                 availableSpaces += mapOf(parkingSpot.name to availablePlaces.toInt())
             Text(
-                    text = parkingSpot.name,
-                    style = MaterialTheme.typography.titleLarge,
-                )
+                text = parkingSpot.name,
+                style = MaterialTheme.typography.titleLarge
+            )
             Spacer(Modifier.weight(1f))
             Text(
-                    text = parkingSpot.type,
-                    style = MaterialTheme.typography.titleMedium
+                text = parkingSpot.type,
+                style = MaterialTheme.typography.titleMedium
             )
             if( availablePlaces != "?") {
                 Spacer(Modifier.weight(1f))
@@ -295,7 +292,7 @@ fun HomeBodyPreview() {
                     name = "BommelstraatParking",
                     streetName ="Bommelstraat",
                     type = "P"
-                ),
+                )
             ),
             typeFilter = mutableSetOf(),
             onItemClick = {},

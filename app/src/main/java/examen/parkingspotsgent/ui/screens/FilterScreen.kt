@@ -12,12 +12,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -59,6 +56,7 @@ fun FilterScreen(
     val appUiState by viewModel.appUiState.collectAsState()
     val typeFilter = appUiState.typeFilter.toMutableSet() //make copy
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -67,26 +65,7 @@ fun FilterScreen(
                 canNavigateBack = canNavigateBack,
                 navigateUp = navigateBack
             )
-        },
-        floatingActionButton = {
-            /**
-             * Called when clicked, the commune filter is the empty set
-             * The Ui effect is the toggling to off of every commune switch
-             */
-            FloatingActionButton(
-                onClick = { onToggleSwitch(mutableSetOf())  },
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
-
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = stringResource(R.string.app_name),
-                )
-            }
-        },
-        floatingActionButtonPosition = FabPosition.Center,
-
+        }
     ) { innerPadding ->
         FilterBody(
             onToggleSwitch = onToggleSwitch,
@@ -106,7 +85,6 @@ internal fun FilterBody(
     typeFilter: MutableSet<String>,
     modifier: Modifier = Modifier
 ) {
-
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
@@ -117,8 +95,8 @@ internal fun FilterBody(
             typeFilter = typeFilter,
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
         )
-        }
     }
+}
 @Composable
 private fun OptionList(
     onToggleSwitch: (MutableSet<String>) -> Unit,
@@ -126,7 +104,6 @@ private fun OptionList(
     typeFilter: MutableSet<String>,
     modifier: Modifier
 ) {
-
     LazyColumn(modifier = modifier) {
         /**
          * Display the type switches
@@ -141,7 +118,6 @@ private fun OptionList(
             )
         }
     }
-
 }
 @Composable
 private fun FilterOption(
@@ -157,8 +133,7 @@ private fun FilterOption(
         FilterOptionRow(
             onToggleSwitch = onToggleSwitch,
             option = option,
-            typeFilter = typeFilter,
-
+            typeFilter = typeFilter
         )
     }
 }
@@ -169,14 +144,12 @@ private fun FilterOptionRow(
     typeFilter: MutableSet<String>,
     modifier: Modifier = Modifier
 ) {
-
     val checked = typeFilter.contains(option)
     Row(
         modifier = modifier
             .padding(start = dimensionResource(id = R.dimen.padding_small)),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Text(
             text = option,
             style = MaterialTheme.typography.titleMedium,
@@ -187,11 +160,11 @@ private fun FilterOptionRow(
         )
         Spacer(modifier = Modifier.weight(1f))
         Switch(
-            checked = checked,
+           checked = checked,
            modifier =Modifier.testTag(stringResource(R.string.switchButton)),
             /**
              * Called when the switch is toggled
-             * and call the callback with type filter sets
+             * and call the callback with type filter set
              */
             onCheckedChange = {
                 if (it){
@@ -210,14 +183,13 @@ private fun FilterOptionRow(
                 {
                     Icon(
                         imageVector = Icons.Filled.Check,
-                        contentDescription = option.lowercase(),
+                        contentDescription = option,
                         modifier = Modifier.size(SwitchDefaults.IconSize),
                     )
                 }
             } else {
                 null
             }
-
         )
     }
 }
@@ -233,8 +205,7 @@ private fun ItemEntryScreenPreview() {
         FilterBody(
             onToggleSwitch = { _:MutableSet<String> ->  },
             allTypes = allTypes,
-            typeFilter = mutableSetOf(),
-
+            typeFilter = mutableSetOf()
         )
     }
 }

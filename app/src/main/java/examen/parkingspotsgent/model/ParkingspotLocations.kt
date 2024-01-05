@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
  * @property results the list of different parkingSpots.
  * @constructor creates ParkingSpotLocations with a list of parkingSpots.
  */
+@Suppress("SpellCheckingInspection")
 @Serializable
 data class ParkingspotLocations(
     val results: List<Result>,

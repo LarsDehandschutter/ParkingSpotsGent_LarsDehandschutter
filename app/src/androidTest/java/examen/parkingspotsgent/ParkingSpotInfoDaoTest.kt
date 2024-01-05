@@ -36,7 +36,6 @@ class ParkingSpotInfoDaoTest {
         lon = 1.0,
         lat = 1.0
     )
-
     /**
      * Declaration of second parkingSpot
      */

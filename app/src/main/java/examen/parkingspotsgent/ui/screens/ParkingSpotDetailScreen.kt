@@ -44,8 +44,6 @@ import examen.parkingspotsgent.ui.theme.ParkingspotsGentTheme
 object ParkingSpotDetailsDestination : NavigationDestination {
     override val route = "parkingSpot_details"
     override val titleRes = R.string.parkingSpot_detail_title
-  //  const val itemIdArg = "itemId"
-  //  val routeWithArgs = "$route/{$itemIdArg}"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,10 +54,11 @@ fun ParkingSpotDetailsScreen(
     viewModel: ParkingSpotsViewModel
 ) {
     val appUiState = viewModel.appUiState.collectAsState()
+    val parkingSpot = appUiState.value.selectedParkingSpot
 
     val view = LocalView.current
     val context = LocalContext.current
-    val parkingSpot = appUiState.value.selectedParkingSpot
+
     Scaffold(
         topBar = {
             ParkingSpotTopAppBar(
@@ -67,7 +66,8 @@ fun ParkingSpotDetailsScreen(
                 canNavigateBack = true,
                 navigateUp = navigateBack
             )
-        }, floatingActionButton = {
+        },
+        floatingActionButton = {
             /**
              * Only provide a fab for showing the Google maps intent
              * if a real parkingSpot was selected
@@ -79,21 +79,20 @@ fun ParkingSpotDetailsScreen(
                         showMap(
                             context = context,
                             lat = parkingSpot.lat,
-                            lon = parkingSpot.lon,
-
+                            lon = parkingSpot.lon
                         )
                     },
                     shape = MaterialTheme.shapes.medium,
                     modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
-
                 ) {
                     Icon(
                         imageVector = Icons.Default.Place,
-                        contentDescription = stringResource(R.string.show_map),
+                        contentDescription = stringResource(R.string.show_map)
                     )
                 }
             }
-        }, modifier = modifier
+        },
+        modifier = modifier
     ) { innerPadding ->
         ParkingSpotDetailsBody(
             parkingSpot = parkingSpot,
@@ -115,7 +114,6 @@ internal fun ParkingSpotDetailsBody(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
-
         ParkingSpotDetails(
             parkingSpot = parkingSpot, modifier = Modifier.fillMaxWidth()
         )
@@ -123,20 +121,20 @@ internal fun ParkingSpotDetailsBody(
             onClick = {
                 view.playSoundEffect(SoundEffectConstants.CLICK)
                 showMap(
-                context = context,
-                lat = parkingSpot.lat,
-                lon = parkingSpot.lon,
-            ) },
+                    context = context,
+                    lat = parkingSpot.lat,
+                    lon = parkingSpot.lon
+                )
+            },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
             /**
-             * Only enable the button if a real doctor is detailed
+             * Only enable the button if a real parking spot is detailed
              */
             enabled = parkingSpot.id != SpecialParkingSpots.emptyParkingSpot.id
         ) {
             Text(stringResource(R.string.show_map))
         }
-
     }
 }
 
@@ -215,7 +213,6 @@ fun ParkingSpotDetails(
                 )
             )
         }
-
     }
 }
 

@@ -5,7 +5,8 @@ package examen.parkingspotsgent.data
  *
  * @property name the name of the parkingSpot.
  * @property availableSpaces the parkingSpot live count of parkingSpaces.
- * @constructor creates a parkingSpot with a name, availableSpaces, lat, lon.
+ * @constructor creates a parkingSpot with a name, availableSpaces,
+ * latitude and longitude.
  */
 data class RealTimeParkingSpotInfo(
     val name: String,

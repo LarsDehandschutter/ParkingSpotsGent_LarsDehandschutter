@@ -28,14 +28,14 @@ data class ParkingSpotInfo(
     val type: String,
     val lon: Double,
     val lat: Double
-    )
+)
 
 /**
  *  Declaration of the "special" parkingSpots used in the application
  */
 @Suppress("SpellCheckingInspection")
 object SpecialParkingSpots {
-    // when there are no parkingSpots to display, likely when filters are too restrictive
+    // when there are no parkingSpots to display, likely when filter is too restrictive
     val noParkingSpots = ParkingSpotInfo(
         id = "dummy",
         name = "Geen parkeerplaatsen gevonden ...",

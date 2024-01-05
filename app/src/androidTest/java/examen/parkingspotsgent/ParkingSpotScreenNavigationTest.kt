@@ -36,15 +36,18 @@ class ParkingSpotScreenNavigationTest {
             ParkingSpotApp(navController = navController)
         }
     }
+
     @Test
     fun parkingSpotNavHost_verifyStartDestination() {
         navController.assertCurrentRouteName(HomeDestination.route)
     }
+
     @Test
     fun parkingSpotNavHost_verifyBackNavigationNotShownOnHomeScreen() {
         val backText = composeTestRule.activity.getString(R.string.back_button)
         composeTestRule.onNodeWithContentDescription(backText).assertDoesNotExist()
     }
+
     @Test
     fun parkingSpotNavHost_clickBuild_navigatesToFilterScreen() {
         val buildText = composeTestRule.activity.getString(R.string.filter_title)
@@ -53,12 +56,14 @@ class ParkingSpotScreenNavigationTest {
             .performClick()
         navController.assertCurrentRouteName(FilterDestination.route)
     }
+
     @Test
     fun parkingSpotNavHost_clickBackOnFilterScreen_navigatesToHomeScreen() {
         navigateToFilterScreen()
         performNavigateUp()
         navController.assertCurrentRouteName(HomeDestination.route)
     }
+
     @Test
     fun parkingSpotNavHost_clickParkingSpotOnHomeScreen_navigatesToParkingSpotDetailsScreen() {
 
@@ -66,9 +71,8 @@ class ParkingSpotScreenNavigationTest {
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             composeTestRule.onAllNodesWithTag(testTag = testTag)
                 .fetchSemanticsNodes().isNotEmpty()
-
         }
-            // Click on first parkingSpot in scrollable list
+        // Click on first parkingSpot in scrollable list
         composeTestRule.onAllNodesWithTag(testTag = testTag)
             .onFirst()
             .performClick()
@@ -81,6 +85,7 @@ class ParkingSpotScreenNavigationTest {
         performNavigateUp()
         navController.assertCurrentRouteName(HomeDestination.route)
     }
+
     @Test
     fun parkingSpotNavHost_clickSwitchesOnFilterScreen_clickBackOnFilterScreen_navigatesToHomeScreen() {
         val testTag = composeTestRule.activity.getString(R.string.sync)
@@ -89,10 +94,8 @@ class ParkingSpotScreenNavigationTest {
         composeTestRule.waitUntil(timeoutMillis = 15000)  {
             composeTestRule.onAllNodesWithTag(testTag = testTag)
                 .fetchSemanticsNodes().isNotEmpty()
-
         }
         navigateToFilterScreen()
-
         composeTestRule.onAllNodesWithTag(composeTestRule.activity.getString(R.string.switchButton))
             .onFirst()
             .performClick()
@@ -101,12 +104,10 @@ class ParkingSpotScreenNavigationTest {
             .performClick()
         performNavigateUp()
         navController.assertCurrentRouteName(HomeDestination.route)
-        // Check if the "special" doctor is displayed
+        // Check if the "special" parking spot is displayed
         composeTestRule.onNodeWithText(SpecialParkingSpots.noParkingSpots.name)   //Error path
             .assertIsDisplayed()
     }
-
-
     /**
      * Click FAB on Home screen
      */
@@ -115,7 +116,6 @@ class ParkingSpotScreenNavigationTest {
         composeTestRule.onNodeWithContentDescription(buildText)
             .performClick()
     }
-
     /**
      * Click first parkingSpot in scrollable list
      */
@@ -124,14 +124,12 @@ class ParkingSpotScreenNavigationTest {
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             composeTestRule.onAllNodesWithTag(testTag = testTag)
                 .fetchSemanticsNodes().isNotEmpty()
-
         }
         // Click on first parkingSpot in scrollable list
         composeTestRule.onAllNodesWithTag(testTag = testTag)
             .onFirst()
             .performClick()
     }
-
     /**
      * Click back in app Top Bar
      */

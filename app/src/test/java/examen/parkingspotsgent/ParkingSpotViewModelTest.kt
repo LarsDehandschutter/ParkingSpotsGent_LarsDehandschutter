@@ -1,7 +1,6 @@
 package examen.parkingspotsgent
 
 import examen.parkingspotsgent.components.TestDispatcherRule
-import examen.parkingspotsgent.data.NetworkParkingSpotLocationsRepository
 import examen.parkingspotsgent.data.OfflineParkingSpotInfoRepository
 import examen.parkingspotsgent.data.ParkingSpotInfo
 import examen.parkingspotsgent.data.RealTimeParkingSpotInfo
@@ -15,7 +14,6 @@ import examen.parkingspotsgent.ui.screens.ParkingSpotsViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -27,9 +25,9 @@ class ParkingSpotViewModelTest {
     @Test
     fun parkingSpotViewModel_getAllParkingSpots_verifyViewModelInitSuccess() = runTest {
         /**
-         * One fake repositories is build by using the real repositories and injecting them
-         * with fake dao en fake api service respectively
-         * The other one is build by using the fake repository
+         * The fake offline repository is build by using the real repository and injecting it
+         * with fake dao
+         * The network repository used is the fake one
          */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
@@ -97,8 +95,9 @@ class ParkingSpotViewModelTest {
     @Test
     fun parkingSpotViewModel_setTypeFilter_verifyAppUiState() = runTest {
         /**
-         * Both fake repositories are build by using the real repositories and injecting them
-         * with fake dao en fake api service respectively
+         * The fake offline repository is build by using the real repository and injecting it
+         * with fake dao
+         * The network repository used is the fake one
          */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
@@ -107,7 +106,6 @@ class ParkingSpotViewModelTest {
                 realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService()
             )
         )
-
         /**
          * Build a type filter containing the type of the first parkingSpot in the fake data source
          */
@@ -118,8 +116,9 @@ class ParkingSpotViewModelTest {
     @Test
     fun parkingSpotViewModel_selectParkingSpot_verifyAppUiState() = runTest {
         /**
-         * Both fake repositories are build by using the real repositories and injecting them
-         * with fake dao en fake api service respectively
+         * The fake offline repository is build by using the real repository and injecting it
+         * with fake dao
+         * The network repository used is the fake one
          */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
@@ -128,12 +127,10 @@ class ParkingSpotViewModelTest {
                 realTimeParkingSpotApiService = FakeRealTimeParkingSpotApiService()
             )
         )
-
         /**
          * Take primary key of first parkingSpot in fake data source
          */
         val key = FakeDataSource.parkingSpotLocations.results.map { it.urid }[0]
-
         /**
          * Take first parkingSpot in fake data source
          */
@@ -156,6 +153,11 @@ class ParkingSpotViewModelTest {
 
     @Test
     fun parkingSpotViewModel_clearParkingSpot_verifyAppUiState() = runTest {
+        /**
+         * The fake offline repository is build by using the real repository and injecting it
+         * with fake dao
+         * The network repository used is the fake one
+         */
         val parkingSpotViewModel = ParkingSpotsViewModel(
             parkingSpotInfoRepository = OfflineParkingSpotInfoRepository(parkingSpotInfoDao = FakeParkingSpotInfoDao()),
             parkingSpotLocationRepository = FakeNetworkParkingSpotLocationRepository(

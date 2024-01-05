@@ -12,7 +12,6 @@ import examen.parkingspotsgent.data.ParkingSpotInfoRepository
 import examen.parkingspotsgent.data.ParkingSpotLocationRepository
 import examen.parkingspotsgent.data.RealTimeParkingSpotInfo
 import examen.parkingspotsgent.data.SpecialParkingSpots
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +34,7 @@ data class AppUiState(
      */
     val typeFilter: MutableSet<String> = mutableSetOf(),
     /**
-     * when filters are too restrictive
+     * Parking spot selection for details
      */
     val selectedParkingSpot: ParkingSpotInfo = SpecialParkingSpots.noParkingSpots,
     /**
@@ -56,8 +55,8 @@ class ParkingSpotsViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = ParkingSpotsUiState()
             )
-    private val _uiState = MutableStateFlow(AppUiState())
 
+    private val _uiState = MutableStateFlow(AppUiState())
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
     /**
@@ -110,12 +109,10 @@ class ParkingSpotsViewModel(
         _uiState.update { currentState ->
             currentState.copy(synchronized = true)
         }
-
-
     }
 
     /**
-     * Sets type filter to all
+     * Sets type filter to allow all types
      */
     private suspend fun updateFilters() {
         parkingSpotInfoRepository.getTypes().forEach {
@@ -128,11 +125,9 @@ class ParkingSpotsViewModel(
      * Selects a parkingSpot for state based on primary key string
      */
     fun selectParkingSpot(id: String) = viewModelScope.launch {
-        val parkingSpot = async {
-            parkingSpotInfoRepository.getParkingSpotsInfo(id)
-        }
+        val parkingSpot = parkingSpotInfoRepository.getParkingSpotsInfo(id)
         _uiState.update { currentState ->
-            currentState.copy(selectedParkingSpot = parkingSpot.await())
+            currentState.copy(selectedParkingSpot = parkingSpot)
         }
     }
     /**
