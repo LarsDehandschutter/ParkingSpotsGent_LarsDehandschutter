@@ -46,6 +46,9 @@ object ParkingSpotDetailsDestination : NavigationDestination {
     override val titleRes = R.string.parkingSpot_detail_title
 }
 
+/**
+ * Composable that displays the appbar, a detail body and a floating action button to go to google maps
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParkingSpotDetailsScreen(
@@ -102,6 +105,10 @@ fun ParkingSpotDetailsScreen(
         )
     }
 }
+
+/**
+ * Composable that displays a column with the details body and button for google maps
+ */
 @VisibleForTesting
 @Composable
 internal fun ParkingSpotDetailsBody(
@@ -138,7 +145,9 @@ internal fun ParkingSpotDetailsBody(
     }
 }
 
-
+/**
+ * intent to access google maps
+ */
 private fun showMap(context: Context, lat: Double, lon: Double) {
     val gmmIntentUri = Uri.parse("geo:$lat,$lon?z=18")
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -146,6 +155,9 @@ private fun showMap(context: Context, lat: Double, lon: Double) {
     context.startActivity(mapIntent)
 }
 
+/**
+ * Composable that shows all the details of the parking spot
+ */
 @Composable
 fun ParkingSpotDetails(
     parkingSpot: ParkingSpotInfo, modifier: Modifier = Modifier
@@ -216,6 +228,9 @@ fun ParkingSpotDetails(
     }
 }
 
+/**
+ * Composable that shows one detail from a parking spot
+ */
 @Composable
 private fun ParkingSpotDetailsRow(
     @StringRes labelResID: Int, parkingSpotDetail: String?, modifier: Modifier = Modifier

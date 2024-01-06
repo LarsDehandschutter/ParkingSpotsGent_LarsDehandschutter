@@ -50,11 +50,17 @@ import examen.parkingspotsgent.data.SpecialParkingSpots
 import examen.parkingspotsgent.navigation.NavigationDestination
 import examen.parkingspotsgent.ui.theme.ParkingspotsGentTheme
 
+/**
+ * Entry route for home screen
+ */
 object HomeDestination : NavigationDestination {
     override val route = "home"
     override val titleRes = R.string.app_name
 }
 
+/**
+ * Composable that displays an appbar and home body
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -116,6 +122,10 @@ fun HomeScreen(
         )
     }
 }
+
+/**
+ * Composable that displays a column with a scrollable list
+ */
 @VisibleForTesting
 @Composable
 internal fun HomeBody(
@@ -141,6 +151,9 @@ internal fun HomeBody(
     }
 }
 
+/**
+ * Composable that displays a list of parking spots
+ */
 @Composable
 private fun ParkingSpotList(
     realTimeParkingList: List<RealTimeParkingSpotInfo>,
@@ -197,6 +210,12 @@ private fun ParkingSpotList(
         }
     }
 }
+
+/**
+ * composable that displays one parking spot of the list.
+ * If the parking spot has real time information display an extra textNode
+ * and give an animation with this node
+ */
 @Suppress("SpellCheckingInspection")
 @Composable
 private fun ParkingSpotItem(

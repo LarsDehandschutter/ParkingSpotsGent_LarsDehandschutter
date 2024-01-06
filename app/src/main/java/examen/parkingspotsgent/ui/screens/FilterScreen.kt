@@ -44,6 +44,9 @@ object FilterDestination : NavigationDestination {
     override val titleRes = R.string.filter_title
 }
 
+/**
+ * Composable that displays the appbar and the filter body
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterScreen(
@@ -77,6 +80,10 @@ fun FilterScreen(
         )
     }
 }
+
+/**
+ * Composable that displays a scrollable list
+ */
 @VisibleForTesting
 @Composable
 internal fun FilterBody(
@@ -97,6 +104,10 @@ internal fun FilterBody(
         )
     }
 }
+
+/**
+ * Composable that displays a list of the types that parking spots can have
+ */
 @Composable
 private fun OptionList(
     onToggleSwitch: (MutableSet<String>) -> Unit,
@@ -119,6 +130,10 @@ private fun OptionList(
         }
     }
 }
+
+/**
+ * Composable that displays a row
+ */
 @Composable
 private fun FilterOption(
     onToggleSwitch: (MutableSet<String>) -> Unit,
@@ -137,6 +152,10 @@ private fun FilterOption(
         )
     }
 }
+
+/**
+ * composable that displays a row with a type and a switch button
+ */
 @Composable
 private fun FilterOptionRow(
     onToggleSwitch: (MutableSet<String>) -> Unit,
