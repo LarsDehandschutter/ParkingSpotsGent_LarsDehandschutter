@@ -23,8 +23,9 @@ import examen.parkingspotsgent.navigation.ParkingSpotNavHost
 import examen.parkingspotsgent.ui.screens.ParkingSpotsViewModel
 
 
-
-
+/**
+ * Composable that represent the screen of the application
+ */
 @Composable
 fun ParkingSpotApp(navController: NavHostController = rememberNavController()) {
         val parkingSpotViewModel: ParkingSpotsViewModel =

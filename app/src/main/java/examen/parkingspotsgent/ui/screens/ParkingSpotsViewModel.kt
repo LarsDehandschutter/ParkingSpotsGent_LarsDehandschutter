@@ -44,10 +44,21 @@ data class AppUiState(
 
     val refreshCount: Long = 0
 )
+/**
+ * class for the the view model
+ *
+ * @property parkingSpotInfoRepository for the offline repository.
+ * @property parkingSpotLocationRepository for the online repository.
+ * @constructor creates the ParkingSpots view model with a parkingSpotInfoRepository, parkingSpotRepository.
+ */
 class ParkingSpotsViewModel(
     val parkingSpotInfoRepository : ParkingSpotInfoRepository,
     val parkingSpotLocationRepository: ParkingSpotLocationRepository
 ): ViewModel() {
+    /**
+     * Holds ui state. The list of parking spots is retrieved from [ParkingSpotInfoRepository] and mapped to
+     * [ParkingSpotsUiState]
+     */
     val parkingSpotUiState: StateFlow<ParkingSpotsUiState> =
         parkingSpotInfoRepository.getAllParkingSpotsStream().map{ ParkingSpotsUiState(it) }
             .stateIn(
@@ -55,7 +66,11 @@ class ParkingSpotsViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = ParkingSpotsUiState()
             )
-
+    /**
+     * Holds ui state. holds a selected parking spot received from [ParkingSpotInfoRepository],
+     * if the list is synchronised and the refresh count and mapped to
+     * [AppUiState]
+     */
     private val _uiState = MutableStateFlow(AppUiState())
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
@@ -122,7 +137,8 @@ class ParkingSpotsViewModel(
     }
 
     /**
-     * Selects a parkingSpot for state based on primary key string
+     * Selects a parkingSpot for state based on primary key [id]
+     * @param id id of the parking spot
      */
     fun selectParkingSpot(id: String) = viewModelScope.launch {
         val parkingSpot = parkingSpotInfoRepository.getParkingSpotsInfo(id)
@@ -132,6 +148,7 @@ class ParkingSpotsViewModel(
     }
     /**
      * Set the filter for type for this app's state.
+     * @param filter a mutable set of types
      */
     fun setTypeFilter(filter: MutableSet<String>) {
         _uiState.update { currentState ->
@@ -170,6 +187,9 @@ class ParkingSpotsViewModel(
     /**
      * During init of single view model, retrofit all parkingSpots, sync Room database
      * and set type filters
+     * Call two asynchronous functions getAllParkingSpots() and startRealTimeParking Monitor
+     * the getAllParkingSpots() will end after it is done
+     * The startRealTimeParkingMonitor() will keep running during the whole app to change the real time information
      */
     init {
         getAllParkingSpots()
